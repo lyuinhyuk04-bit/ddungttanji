@@ -254,39 +254,31 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                         })
                         continue
                     
-                    # Check for 뱅온 status markers (e.g. "🔔뱅온", "🔔뱅온 - 오전 7시")
-                    time_str = "미정"
-                    status_details = [d for d in details if "뱅온" in d or "🔔" in d]
-                    content_details = [d for d in details if "뱅온" not in d or len(d) > 10]
-                    
                     # Extract time from status or content
+                    time_str = "미정"
                     for d in details:
                         extracted = extract_time(d)
                         if extracted != "미정":
                             time_str = extracted
                             break
                     
-                    # Build title from content (skip pure status markers like "🔔뱅온")
-                    real_content = [d for d in details if not re.match(r"^🔔?(뱅온|휴뱅)\s*-?\s*$", d.strip())]
+                    # Content details: exclude lines containing status indicators like "뱅온", "휴뱅", "휴방"
+                    real_content = [d for d in details if not ("뱅온" in d or "휴뱅" in d or "휴방" in d)]
+                    if not real_content:
+                        real_content = [d for d in details if not re.match(r"^🔔?(뱅온|휴뱅)\s*-?\s*$", d.strip())]
                     if not real_content:
                         real_content = details
                     
-                    title = real_content[0] if real_content else "뱅온"
-                    # Clean up 🔔 prefix from title
-                    title = re.sub(r"^🔔\s*", "", title).strip()
-                    if title.startswith("뱅온 -"):
-                        title = title[6:].strip() or "뱅온"
-                    if title.startswith("뱅온"):
-                        title_rest = title[2:].strip().lstrip("-").strip()
-                        if title_rest:
-                            title = title_rest
+                    # Clean up prefixes like emojis and redundant spaces
+                    real_content = [re.sub(r"^🔔\s*", "", p).strip() for p in real_content]
+                    real_content = [p for p in real_content if p]
                     
-                    note_parts = real_content[1:] if len(real_content) > 1 else []
-                    # Clean 🔔 from note parts too
-                    note_parts = [re.sub(r"^🔔\s*(뱅온\s*-?\s*)?", "", p).strip() for p in note_parts]
-                    note_parts = [p for p in note_parts if p]
+                    # Apply time pattern removal to each content detail individually first
+                    cleaned_contents = [remove_time_patterns(p) for p in real_content]
+                    cleaned_contents = [p.strip() for p in cleaned_contents if p.strip()]
                     
-                    cleaned_title = remove_time_patterns(title if title else "뱅온")
+                    # Build title from all cleaned content details joined by ' / '
+                    cleaned_title = " / ".join(cleaned_contents) if cleaned_contents else "뱅온"
                     if not cleaned_title:
                         cleaned_title = "뱅온"
 
@@ -296,7 +288,7 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                         "day": day_name,
                         "time": time_str,
                         "title": cleaned_title,
-                        "note": " / ".join(note_parts) if note_parts else "구글 시트 일정표 기준",
+                        "note": "구글 시트 일정표 기준",
                         "source": "google_sheet"
                     })
                 
