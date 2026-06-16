@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>뚱딴지 크루 주간 일정표</title>
+  <meta name="description" content="뚱딴지 크루 멤버들의 실시간 주간 방송 일정표입니다. 구글 시트 및 SOOP 공지를 기반으로 통합 제공됩니다.">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts (Outfit & Noto Sans KR) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  
+  <div class="app-container">
+    
+    <!-- Sidebar / Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="logo.png" alt="뚱딴지 로고" class="logo-img">
+          <div class="logo-text">
+            <h1>뚱딴지</h1>
+            <p>주간 일정표</p>
+          </div>
+        </div>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Crew Public Links Section -->
+      <div class="sidebar-section">
+        <h2 class="section-title">CREW LINKS</h2>
+        <div class="crew-links-grid" id="crewLinksContainer">
+          <!-- Dynamically populated crew links -->
+          <div class="loading-spinner-small"></div>
+        </div>
+      </div>
+      
+      <!-- Members Selection Section -->
+      <div class="sidebar-section">
+        <h2 class="section-title">MEMBERS</h2>
+        <div class="members-list" id="membersListContainer">
+          <!-- Dynamically populated members -->
+          <div class="loading-spinner-small"></div>
+        </div>
+      </div>
+      
+      <!-- Admin Mode Toggle -->
+      <div class="sidebar-section admin-section" style="margin-top:auto; border-top: 1px solid var(--glass-border);">
+        <div class="admin-toggle-wrapper">
+          <span class="admin-label"><i class="fa-solid fa-user-gear"></i> 관리자 모드</span>
+          <label class="switch">
+            <input type="checkbox" id="adminModeToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <p>© 2026 DDUNTANZY Crew</p>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="menu-toggle-btn" id="menuToggleBtn"><i class="fa-solid fa-bars"></i></button>
+        
+        <!-- Active Member Profile Summary -->
+        <div class="active-member-profile" id="activeMemberProfile">
+          <!-- Dynamically populated -->
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="방송 날짜, 제목, 키워드로 검색...">
+          <button class="clear-search-btn" id="clearSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </header>
+      
+      <!-- Content Body -->
+      <div class="content-body">
+        
+        <!-- Weekly Schedule Section -->
+        <section class="schedule-section" id="scheduleViewSection">
+          <div class="section-header">
+            <div class="week-navigator">
+              <button class="nav-btn" id="prevWeekBtn" title="이전 주"><i class="fa-solid fa-chevron-left"></i></button>
+              <h2 class="current-week-label" id="currentWeekLabel">2026년 06월 3째주</h2>
+              <button class="nav-btn" id="nextWeekBtn" title="다음 주"><i class="fa-solid fa-chevron-right"></i></button>
+              <button class="today-btn" id="todayBtn">오늘</button>
+            </div>
+            
+            <div class="data-status-badge">
+              <span class="status-dot"></span>
+              <span class="status-text">실시간 연동 완료</span>
+            </div>
+          </div>
+          
+          <!-- Sync Notice Banner -->
+          <div class="schedule-info-banner">
+            <i class="fa-solid fa-circle-info info-icon"></i>
+            <span class="info-text">본 일정표는 구글 시트와 SOOP 공지사항을 바탕으로 자동 연동 및 최신화됩니다. (관리자가 직접 수동 수정한 일정은 자동으로 덮어쓰이지 않고 유지됩니다.)</span>
+          </div>
+          
+          <!-- Weekly Calendar Grid (Monday - Sunday) -->
+          <div class="weekly-grid" id="weeklyGridContainer">
+            <!-- Dynamically generated days (Mon ~ Sun) -->
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <p>일정표를 불러오는 중입니다...</p>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Live Status Section -->
+        <section class="live-status-section" id="liveStatusSection">
+          <div class="section-header">
+            <h2>
+              <i class="fa-solid fa-tower-broadcast" style="color:var(--accent-pink);margin-right:8px;font-size:18px;"></i>
+              멤버 실시간 방송 미리보기
+            </h2>
+            <button class="refresh-btn" id="liveRefreshBtn" title="방송 정보 새로고침">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span id="liveRefreshText">새로고침</span>
+            </button>
+          </div>
+          <div class="live-grid" id="liveGridContainer">
+            <div class="loading-container" style="grid-column: 1 / -1;">
+              <div class="loading-spinner-small"></div>
+              <p style="font-size: 13px; color: var(--color-text-secondary);">방송 정보를 불러오는 중입니다...</p>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Search Results Section (Initially Hidden) -->
+        <section class="search-results-section hidden" id="searchResultsSection">
+          <div class="section-header">
+            <h2>검색 결과 <span class="search-count" id="searchCount">0건</span></h2>
+            <button class="back-to-week-btn" id="backToWeekBtn"><i class="fa-solid fa-arrow-left"></i> 주간 일정표로 복귀</button>
+          </div>
+          <div class="search-results-list" id="searchResultsList">
+            <!-- Dynamically populated search result items -->
+          </div>
+        </section>
+        
+      </div>
+    </main>
+    
+  </div>
+
+  <!-- Edit/Add Schedule Modal -->
+  <div class="modal-overlay" id="scheduleModal">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">일정 수정</h3>
+        <button class="modal-close-btn" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="scheduleForm">
+          <!-- Hidden inputs for identifying entry -->
+          <input type="hidden" id="editIndex" value="">
+          <input type="hidden" id="editOrigDate" value="">
+          
+          <div class="form-group">
+            <label for="editDate">날짜</label>
+            <input type="date" id="editDate" required>
+          </div>
+          <div class="form-group">
+            <label for="editTime">시간 (예: 18:00 또는 미정)</label>
+            <input type="text" id="editTime" required placeholder="예: 18:00 또는 미정">
+          </div>
+          <div class="form-group">
+            <label for="editTitle">일정 내용</label>
+            <input type="text" id="editTitle" required placeholder="일정 내용을 입력하세요">
+          </div>
+          <div class="form-group">
+            <label for="editNote">비고/참고</label>
+            <input type="text" id="editNote" placeholder="예: 수동 수정">
+          </div>
+          <div class="form-group lock-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="editLock" checked>
+              <span class="checkmark"></span>
+              수집 자동 덮어쓰기 방지 (Lock)
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-delete" id="deleteBtn">삭제</button>
+            <button type="submit" class="btn btn-save" id="saveBtn">저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Save Button -->
+  <div class="floating-save-action" id="floatingSaveAction">
+    <button class="btn-floating-save" id="floatingSaveBtn">
+      <i class="fa-solid fa-cloud-arrow-up"></i> 변경사항 서버에 저장하기
+    </button>
+  </div>
+  
+  <!-- Embedded Data (auto-generated by sync_schedule.py) -->
+  <script src="data.js"></script>
+  <!-- Main App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

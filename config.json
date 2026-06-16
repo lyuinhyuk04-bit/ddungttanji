@@ -1,0 +1,92 @@
+{
+  "crewLinks": {
+    "youtube": "https://www.youtube.com/@%EB%B2%84%ED%8A%9C%EB%B2%84%EB%9A%B1%EB%94%B4%EC%A7%80",
+    "cafe": "https://cafe.naver.com/addeung",
+    "sheet": "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/edit?gid=185905705#gid=185905705"
+  },
+  "defaultMember": "adeung",
+  "members": {
+    "adeung": {
+      "name": "아뚱",
+      "emoji": "🐷",
+      "soopId": "gjstn7637",
+      "soopBoards": [
+        "https://www.sooplive.com/station/gjstn7637/board/120654963"
+      ]
+    },
+    "yuki": {
+      "name": "유키",
+      "emoji": "❄️",
+      "avatar": "yuki.jpg",
+      "soopId": "amaiyk0105",
+      "soopBoards": [
+        "https://www.sooplive.com/station/amaiyk0105/board/109321189",
+        "https://www.sooplive.com/station/amaiyk0105/board/123920023"
+      ],
+      "sheetUrl": "https://docs.google.com/spreadsheets/d/15fY3MiUeEYFjIb3RxpPTF59hLLJKBoj5x1aciuLGnQg/export?format=csv&gid=1190054467"
+    },
+    "ggommori": {
+      "name": "꼼모리",
+      "emoji": "💛",
+      "avatar": "ggommori.png",
+      "soopId": "et0726",
+      "soopBoards": [
+        "https://www.sooplive.com/station/et0726/board/9373250"
+      ]
+    },
+    "niniming": {
+      "name": "니니밍",
+      "emoji": "💜",
+      "avatar": "niniming.png",
+      "soopId": "niniming",
+      "soopBoards": [
+        "https://www.sooplive.com/station/niniming/board/91262538"
+      ]
+    },
+    "homiming": {
+      "name": "호미밍",
+      "emoji": "🍒",
+      "avatar": "homiming.png",
+      "soopId": "donggeul2",
+      "soopBoards": [
+        "https://www.sooplive.com/station/donggeul2/board/104919443"
+      ]
+    },
+    "peach": {
+      "name": "피치",
+      "emoji": "🍑",
+      "avatar": "peach.png",
+      "soopId": "nslah830",
+      "soopBoards": [
+        "https://www.sooplive.com/station/nslah830/board/114425409"
+      ]
+    },
+    "maribyeol": {
+      "name": "마리별",
+      "emoji": "💫",
+      "avatar": "maribyeol.png",
+      "soopId": "maribyeol",
+      "soopBoards": [
+        "https://www.sooplive.com/station/maribyeol/board/109019693"
+      ]
+    },
+    "neboring": {
+      "name": "너보링",
+      "emoji": "🩵",
+      "avatar": "neboring.png",
+      "soopId": "hibby1004",
+      "soopBoards": [
+        "https://www.sooplive.com/station/hibby1004/board/112344241"
+      ]
+    },
+    "heda": {
+      "name": "헤다",
+      "emoji": "💙",
+      "avatar": "heda.png",
+      "soopId": "heda221112",
+      "soopBoards": [
+        "https://www.sooplive.com/station/heda221112/board/97339768"
+      ]
+    }
+  }
+}
