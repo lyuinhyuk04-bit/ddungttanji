@@ -1,0 +1,31 @@
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Environment
+.env
+env/
+venv/
+.venv/
+
+# Project Cache & Intermediate files (Auto-generated during sync)
+notices_cache.json
+parsed_soop_posts.json
+board_search_result.json
+member_boards.json
+
+# Temporary/Diagnostic text and HTML files
+soop_page.html
+board_info.txt
+board_find2.txt
+check_boards_out.txt
+sync_out.txt
+sync_out_utf8.txt
+sync_out2_utf8.txt
+server_error.log
+
+# Scratch/Test scripts
+scratch/

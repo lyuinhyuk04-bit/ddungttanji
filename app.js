@@ -664,22 +664,129 @@ function showToast(msg, type = 'success') {
 // ── Live Status ──────────────────────────────────────────────────────────────
 let isFetchingLive = false;
 
+function renderOfflineFallback() {
+  if (!appConfig || !appConfig.members) return;
+  const fallbackData = Object.entries(appConfig.members).map(([key, m]) => {
+    const stationUrl = (m.soopBoards && m.soopBoards[0]) || `https://www.sooplive.com/station/${m.soopId}`;
+    return {
+      member: key,
+      name: m.name,
+      is_live: false,
+      profile_image: m.avatar || 'logo.png',
+      broad_title: '방송 준비 중',
+      url: stationUrl,
+      thumbnail: m.avatar || 'logo.png'
+    };
+  });
+  renderLiveStatus(fallbackData);
+}
+
 function fetchLiveStatus() {
-  if (liveGridContainer) {
-    liveGridContainer.innerHTML = `
-      <div class="loading-container" style="grid-column: 1 / -1;">
-        <p>실시간 방송 기능 준비 중</p>
-      </div>
-    `;
-  }
+  if (isFetchingLive) return;
+  isFetchingLive = true;
 
+  if (liveRefreshBtn) {
+    const icon = liveRefreshBtn.querySelector('i');
+    if (icon) icon.classList.add('spin');
+  }
   if (liveRefreshText) {
-    liveRefreshText.textContent = '실시간 방송 기능 준비 중';
+    liveRefreshText.textContent = '불러오는 중...';
   }
 
-  isFetchingLive = false;
+  const handleFailure = (err) => {
+    console.error('Error fetching live status:', err);
+    renderOfflineFallback();
+    if (liveRefreshText) {
+      liveRefreshText.textContent = '업데이트 완료';
+      setTimeout(() => {
+        liveRefreshText.textContent = '새로고침';
+      }, 3000);
+    }
+  };
+
+  if (window.location.protocol === 'file:') {
+    handleFailure(new Error('Local file protocol'));
+    isFetchingLive = false;
+    if (liveRefreshBtn) {
+      const icon = liveRefreshBtn.querySelector('i');
+      if (icon) icon.classList.remove('spin');
+    }
+    return;
+  }
+
+  fetch('/api/live_status')
+    .then(resp => {
+      if (!resp.ok) {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+      }
+      return resp.json();
+    })
+    .then(data => {
+      renderLiveStatus(data);
+      if (liveRefreshText) {
+        liveRefreshText.textContent = '업데이트 완료';
+        setTimeout(() => {
+          liveRefreshText.textContent = '새로고침';
+        }, 3000);
+      }
+    })
+    .catch(err => {
+      handleFailure(err);
+    })
+    .finally(() => {
+      isFetchingLive = false;
+      if (liveRefreshBtn) {
+        const icon = liveRefreshBtn.querySelector('i');
+        if (icon) icon.classList.remove('spin');
+      }
+    });
 }
 
 function renderLiveStatus(results) {
-  return;
+  if (!liveGridContainer || !results) return;
+
+  // Render cards sorted: live streams first, then offline streams
+  const sortedResults = [...results].sort((a, b) => {
+    if (a.is_live && !b.is_live) return -1;
+    if (!a.is_live && b.is_live) return 1;
+    return 0; // maintain original config order otherwise
+  });
+
+  liveGridContainer.innerHTML = sortedResults.map(r => {
+    const mConfig = appConfig.members[r.member] || {};
+    
+    // Choose avatar source based on live status
+    const avatarSrc = r.is_live ? (mConfig.avatar || r.profile_image || 'logo.png') : (mConfig.avatar || 'logo.png');
+    
+    const avatarHtml = `<img src="${avatarSrc}" alt="${r.name}" class="live-card-avatar" onerror="this.src='logo.png'">`;
+
+    const cardClass = r.is_live ? 'live-card live-active' : 'live-card offline-active';
+    const statusText = r.is_live ? 'LIVE' : 'OFFLINE';
+    const statusClass = r.is_live ? 'status-badge live' : 'status-badge offline';
+    const displayTitle = r.is_live ? r.broad_title : '방송 준비 중';
+
+    // Thumbnail: if live, use the animated SOOP live thumbnail. If offline, use member avatar or logo.png
+    const thumbnailSrc = r.is_live ? r.thumbnail : (mConfig.avatar || 'logo.png');
+
+    return `
+      <div class="${cardClass}" onclick="window.open('${r.url}', '_blank')">
+        <div class="live-card-header">
+          <div class="live-card-member">
+            ${avatarHtml}
+            <span class="live-card-name">${r.name}</span>
+          </div>
+          <span class="${statusClass}">${statusText}</span>
+        </div>
+        <div class="live-thumbnail-wrapper">
+          <img src="${thumbnailSrc}" alt="${r.name} 방송 미리보기" class="live-thumbnail-img" loading="lazy" onerror="this.src='logo.png'">
+          <div class="live-thumbnail-overlay">
+            <div class="live-title-text">${displayTitle}</div>
+          </div>
+          <div class="live-thumbnail-play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
