@@ -31,7 +31,7 @@ def remove_time_patterns(text):
     if not text:
         return ""
     # 1. Match patterns like "오전/오후/새벽/밤/낮 12시 30분", "오후 7시", "19시 30분", "19:00", "19시", etc.
-    cleaned = re.sub(r'(오전|오후|새벽|밤|낮)?\s*\d{1,2}\s*시\s*(\d{1,2}\s*분)?', '', text)
+    cleaned = re.sub(r'(오전|오후|새벽|밤|낮)?\s*\d{1,2}\s*시(?!간)\s*(\d{1,2}\s*분)?', '', text)
     cleaned = re.sub(r'\d{1,2}:\d{2}', '', cleaned)
     
     # 2. Clean up leftover separators, trailing/leading spaces and hyphens/slashes
@@ -46,6 +46,30 @@ def remove_time_patterns(text):
     
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
     return cleaned
+
+def is_generic_title(text):
+    if not text:
+        return True
+    cleaned = re.sub(r'[\s\W_]+', '', text)
+    if not cleaned or cleaned.isdigit():
+        return True
+    
+    generic_words = [
+        "오늘", "오늘도", "공지", "공지사항", "뱅온", "미정", "방송", "일정", "스케줄", "스케쥴",
+        "생방", "켰어", "켰어요", "켬", "켜요", "올게", "올께", "오겠음", "오겠습니다", "올게요",
+        "올께요", "있다봐요", "이따봐요", "이따봐", "이따봬요", "좀늦음", "늦음", "늦잠", "봬요",
+        "뵈요", "봐요", "오겠", "올게", "뱅온함", "뱅온해요", "오겠슴다", "오겠습니당", "오겟습니다",
+        "오겟슴다", "올겡", "올겟", "올겠", "올게용", "올께용", "켜서", "키겠", "키겟", "켭니다",
+        "킬꺼", "켜고", "킬거", "올겡", "시작", "공지사항"
+    ]
+    temp = cleaned
+    for gw in sorted(generic_words, key=len, reverse=True):
+        temp = temp.replace(gw, "")
+    
+    temp_clean = re.sub(r'[\d\W_]+', '', temp)
+    if not temp_clean:
+        return True
+    return False
 
 def fetch_google_sheet():
     print("Fetching Google Sheet...")
@@ -122,7 +146,8 @@ def parse_google_sheet(csv_data, member_key):
                 if is_member or is_crew:
                     tm = extract_time(line)
                     line_clean = remove_time_patterns(line)
-                    if not line_clean:
+                    clean_word = re.sub(r'[\s\W_]+', '', line_clean)
+                    if not clean_word or clean_word.isdigit() or line_clean in ["뱅온", "공지", "미정"]:
                         line_clean = "미정"
                     title = ("[크루] " if is_crew else "") + line_clean
                     schedules.append({
@@ -285,7 +310,8 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                     else:
                         cleaned_title = "미정"
                         
-                    if not cleaned_title:
+                    clean_word = re.sub(r'[\s\W_]+', '', cleaned_title)
+                    if not clean_word or clean_word.isdigit() or cleaned_title in ["뱅온", "공지", "미정"]:
                         cleaned_title = "미정"
 
                     schedules.append({
@@ -436,12 +462,34 @@ def refine_schedule_title(title, body):
     if not final_title or final_title == "미정":
         clean_raw = re.sub(r'[\U00010000-\U0010ffff]', '', title).strip()
         clean_raw = remove_time_patterns(clean_raw)
-        if clean_raw and clean_raw not in ["뱅온", "공지", "미정"]:
+        if clean_raw and not is_generic_title(clean_raw):
             return clean_raw[:35] + "..." if len(clean_raw) > 35 else clean_raw
         else:
             return "미정"
         
     return final_title
+
+def find_post_container(a):
+    best_div = None
+    for parent in a.parents:
+        if parent.name in ["li", "tr"]:
+            return parent
+        if parent.name == "div":
+            classes = parent.get("class", [])
+            if any("post" in c.lower() or "item" in c.lower() for c in classes):
+                best_div = parent
+            all_links = parent.find_all("a", href=re.compile(r"/post/\d+"))
+            post_ids = set()
+            for l in all_links:
+                m = re.search(r"/post/(\d+)", l["href"])
+                if m:
+                    post_ids.add(m.group(1))
+            if len(post_ids) == 1:
+                if not best_div:
+                    best_div = parent
+            else:
+                break
+    return best_div
 
 def parse_soop_html(html, member_key):
     """Parse SOOP board HTML into list of notice dicts."""
@@ -450,10 +498,10 @@ def parse_soop_html(html, member_key):
     soup = BeautifulSoup(html, "html.parser")
     posts = []
     seen_posts = set()
-    for container in soup.find_all(["li", "tr", "div"]):
-        a = container.find("a", href=re.compile(r"/post/\d+"))
-        if not a:
-            continue
+    
+    # Find all unique post links first
+    all_post_links = soup.find_all("a", href=re.compile(r"/post/\d+"))
+    for a in all_post_links:
         href = a["href"]
         post_id_match = re.search(r"/post/(\d+)", href)
         if not post_id_match:
@@ -461,6 +509,11 @@ def parse_soop_html(html, member_key):
         post_id = post_id_match.group(1)
         if post_id in seen_posts:
             continue
+            
+        container = find_post_container(a)
+        if not container:
+            continue
+            
         parts = [p.strip() for p in container.get_text("|", strip=True).split("|") if p.strip()]
         if len(parts) < 3:
             continue
@@ -483,13 +536,12 @@ def parse_soop_html(html, member_key):
                     title = parts[3]
                     body = parts[4] if len(parts) > 4 else ""
             
-            # Keywords representing broadcast time / streaming start or activities (short stems for robustness)
             time_stems = ["뱅온", "올게", "올께", "오겠", "오겟", "오께", "킬게", "킬께", "켜서", "키겠", "키겟", "켭니다", "킬꺼", "켜고", "킬거", "올겡", "시작"]
             sched_stems = ["하겠", "하겟", "할거", "할꺼", "할게", "할겡", "봐요", "봬요", "뵈요", "보자", "보쟈", "보겟", "보겠", "휴뱅", "휴방", "휴빵", "일정", "스케줄", "스케쥴", "쉬어", "쉬고", "쉽니다", "쉬다", "쉬겠", "휴무", "방송"]
             all_kws = time_stems + sched_stems
             
             content = (title + " " + body).lower().replace(" ", "")
-            has_time = re.search(r'\d{1,2}\s*시', content) or re.search(r'\d{1,2}\s*:\s*\d{2}', content)
+            has_time = len(extract_all_times(title + " " + body)) > 0 or re.search(r'\d{1,2}\s*:\s*\d{2}', content)
             
             if has_time or any(kw in content for kw in all_kws):
                 refined_title = refine_schedule_title(title, body)
@@ -509,7 +561,7 @@ def parse_soop_html(html, member_key):
 def extract_all_times(text):
     times = []
     # Pattern A: (오전|오후|저녁|밤|아침|새벽)? \d시 \d분 (반)?
-    pat_a = re.compile(r"(오전|오후|저녁|밤|아침|새벽)?\s*(\d{1,2})\s*시(?:\s*(\d{1,2})\s*분)?(?:\s*(반))?")
+    pat_a = re.compile(r"(오전|오후|저녁|밤|아침|새벽)?\s*(\d{1,2})\s*시(?!간)(?:\s*(\d{1,2})\s*분)?(?:\s*(반))?")
     for m in pat_a.finditer(text):
         raw = m.group(0)
         ampm = m.group(1)

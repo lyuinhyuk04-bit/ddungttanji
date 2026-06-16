@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -43,9 +43,7 @@ export default async function handler(req, res) {
 
         const obj = await response.json();
         let profileImg = obj.profile_image || "";
-        if (profileImg.startswith && profileImg.startsWith("//")) {
-          profileImg = "https:" + profileImg;
-        } else if (typeof profileImg === 'string' && profileImg.indexOf('//') === 0) {
+        if (profileImg && typeof profileImg === 'string' && profileImg.indexOf('//') === 0) {
           profileImg = "https:" + profileImg;
         }
 
