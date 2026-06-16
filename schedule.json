@@ -1748,7 +1748,7 @@
     "day": "화",
     "time": "미정",
     "title": "노래 방송",
-    "note": "SOOP 공지 참고: 노래 방송 (22...)",
+    "note": "SOOP 공지 참고: 노래 방송 (23...)",
     "source": "soop",
     "url": "https://www.sooplive.com/station/heda221112/post/198794469"
   },
@@ -1791,6 +1791,15 @@
     "source": "manual"
   },
   {
+    "member": "yuki",
+    "date": "2026-06-16",
+    "day": "화",
+    "time": "07:00",
+    "title": "시네티 써니 시청 / 성세천하2 Play",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "homiming",
     "date": "2026-06-17",
     "day": "수",
@@ -1806,6 +1815,15 @@
     "day": "수",
     "time": "22:30",
     "title": "🩵너보링 뱅온",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-17",
+    "day": "수",
+    "time": "07:00",
+    "title": "카페보기 / 트할님 아레나",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -1895,6 +1913,15 @@
     "member": "yuki",
     "date": "2026-06-18",
     "day": "목",
+    "time": "07:00",
+    "title": "피파 팀갈 / 뚱놀 엔더런 하코 대결 저녁",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-18",
+    "day": "목",
     "time": "19:00",
     "title": "[크루] 🐝뚱딴지의놀이터",
     "note": "구글 시트 일정표 기준",
@@ -1920,6 +1947,15 @@
     "source": "google_sheet"
   },
   {
+    "member": "yuki",
+    "date": "2026-06-19",
+    "day": "금",
+    "time": "07:00",
+    "title": "월드컵 중계",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "homiming",
     "date": "2026-06-20",
     "day": "토",
@@ -1930,6 +1966,15 @@
     "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
   },
   {
+    "member": "yuki",
+    "date": "2026-06-20",
+    "day": "토",
+    "time": "07:00",
+    "title": "뱅온",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "homiming",
     "date": "2026-06-21",
     "day": "일",
@@ -1938,6 +1983,15 @@
     "note": "3주년 기념 케이크 베이킹 (w. 고글이)",
     "source": "manual",
     "url": "https://cafe.naver.com/f-e/cafes/30752173/articles/15767"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-21",
+    "day": "일",
+    "time": "미정",
+    "title": "뱅온",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
   },
   {
     "member": "homiming",
@@ -1971,8 +2025,8 @@
     "date": "2026-06-22",
     "day": "월",
     "time": "14:00",
-    "title": "뚱딴지 점호 및 유키 컨텐츠",
-    "note": "뚱딴지 YAPYAP 게임 합방 오후 8시",
+    "title": "뚱딴지 점호 및 유키 컨텐츠 / 뚱딴지 YAPYAP 게임 합방",
+    "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
   {
