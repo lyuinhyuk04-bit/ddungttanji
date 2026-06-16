@@ -264,23 +264,23 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                     
                     # Content details: exclude lines containing status indicators like "뱅온", "휴뱅", "휴방"
                     real_content = [d for d in details if not ("뱅온" in d or "휴뱅" in d or "휴방" in d)]
-                    if not real_content:
-                        real_content = [d for d in details if not re.match(r"^🔔?(뱅온|휴뱅)\s*-?\s*$", d.strip())]
-                    if not real_content:
-                        real_content = details
                     
-                    # Clean up prefixes like emojis and redundant spaces
-                    real_content = [re.sub(r"^🔔\s*", "", p).strip() for p in real_content]
-                    real_content = [p for p in real_content if p]
-                    
-                    # Apply time pattern removal to each content detail individually first
-                    cleaned_contents = [remove_time_patterns(p) for p in real_content]
-                    cleaned_contents = [p.strip() for p in cleaned_contents if p.strip()]
-                    
-                    # Build title from all cleaned content details joined by ' / '
-                    cleaned_title = " / ".join(cleaned_contents) if cleaned_contents else "뱅온"
+                    if real_content:
+                        # Clean up prefixes like emojis and redundant spaces
+                        real_content = [re.sub(r"^🔔\s*", "", p).strip() for p in real_content]
+                        real_content = [p for p in real_content if p]
+                        
+                        # Apply time pattern removal to each content detail individually first
+                        cleaned_contents = [remove_time_patterns(p) for p in real_content]
+                        cleaned_contents = [p.strip() for p in cleaned_contents if p.strip()]
+                        
+                        # Build title from all cleaned content details joined by ' / '
+                        cleaned_title = " / ".join(cleaned_contents) if cleaned_contents else "미정"
+                    else:
+                        cleaned_title = "미정"
+                        
                     if not cleaned_title:
-                        cleaned_title = "뱅온"
+                        cleaned_title = "미정"
 
                     schedules.append({
                         "member": member_key,
@@ -342,8 +342,8 @@ def parse_relative_date(text):
 def refine_schedule_title(title, body):
     full_text = (title + " " + body).strip()
     
-    # 1. Check if it's a rest day (휴방 / 휴뱅)
-    if any(h in full_text for h in ["휴방", "휴뱅", "쉬어", "쉬고", "쉬겠", "쉽니다", "쉬다"]):
+    # 1. Check if it's a rest day (휴방 / 휴뱅 / 휴빵)
+    if any(h in full_text for h in ["휴방", "휴뱅", "휴빵", "쉬어", "쉬고", "쉬겠", "쉽니다", "쉬다"]):
         return "휴방"
 
     # 2. Extract Time
@@ -441,11 +441,19 @@ def parse_soop_html(html, member_key):
         return []
     soup = BeautifulSoup(html, "html.parser")
     posts = []
-    for li in soup.find_all(["li", "tr"]):
-        a = li.find("a", href=re.compile(r"/post/\d+"))
+    seen_posts = set()
+    for container in soup.find_all(["li", "tr", "div"]):
+        a = container.find("a", href=re.compile(r"/post/\d+"))
         if not a:
             continue
-        parts = [p.strip() for p in li.get_text("|", strip=True).split("|") if p.strip()]
+        href = a["href"]
+        post_id_match = re.search(r"/post/(\d+)", href)
+        if not post_id_match:
+            continue
+        post_id = post_id_match.group(1)
+        if post_id in seen_posts:
+            continue
+        parts = [p.strip() for p in container.get_text("|", strip=True).split("|") if p.strip()]
         if len(parts) < 3:
             continue
         date_str = None
@@ -469,7 +477,7 @@ def parse_soop_html(html, member_key):
             
             # Keywords representing broadcast time / streaming start or activities (short stems for robustness)
             time_stems = ["뱅온", "올게", "올께", "오겠", "오겟", "오께", "킬게", "킬께", "켜서", "키겠", "키겟", "켭니다", "킬꺼", "켜고", "킬거", "올겡"]
-            sched_stems = ["하겠", "하겟", "할거", "할꺼", "할게", "할겡", "봐요", "봬요", "뵈요", "보자", "보쟈", "보겟", "보겠", "휴뱅", "휴방"]
+            sched_stems = ["하겠", "하겟", "할거", "할꺼", "할게", "할겡", "봐요", "봬요", "뵈요", "보자", "보쟈", "보겟", "보겠", "휴뱅", "휴방", "휴빵"]
             all_kws = time_stems + sched_stems
             
             content = (title + " " + body).lower().replace(" ", "")
@@ -482,6 +490,7 @@ def parse_soop_html(html, member_key):
                     "body":   body,
                     "url":    "https://www.sooplive.com" + a["href"]
                 })
+                seen_posts.add(post_id)
     return posts
 
 # ── Time parser ───────────────────────────────────────────────────────────────
