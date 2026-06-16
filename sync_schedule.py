@@ -484,12 +484,14 @@ def parse_soop_html(html, member_key):
                     body = parts[4] if len(parts) > 4 else ""
             
             # Keywords representing broadcast time / streaming start or activities (short stems for robustness)
-            time_stems = ["뱅온", "올게", "올께", "오겠", "오겟", "오께", "킬게", "킬께", "켜서", "키겠", "키겟", "켭니다", "킬꺼", "켜고", "킬거", "올겡"]
-            sched_stems = ["하겠", "하겟", "할거", "할꺼", "할게", "할겡", "봐요", "봬요", "뵈요", "보자", "보쟈", "보겟", "보겠", "휴뱅", "휴방", "휴빵"]
+            time_stems = ["뱅온", "올게", "올께", "오겠", "오겟", "오께", "킬게", "킬께", "켜서", "키겠", "키겟", "켭니다", "킬꺼", "켜고", "킬거", "올겡", "시작"]
+            sched_stems = ["하겠", "하겟", "할거", "할꺼", "할게", "할겡", "봐요", "봬요", "뵈요", "보자", "보쟈", "보겟", "보겠", "휴뱅", "휴방", "휴빵", "일정", "스케줄", "스케쥴", "쉬어", "쉬고", "쉽니다", "쉬다", "쉬겠", "휴무", "방송"]
             all_kws = time_stems + sched_stems
             
             content = (title + " " + body).lower().replace(" ", "")
-            if any(kw in content for kw in all_kws):
+            has_time = re.search(r'\d{1,2}\s*시', content) or re.search(r'\d{1,2}\s*:\s*\d{2}', content)
+            
+            if has_time or any(kw in content for kw in all_kws):
                 refined_title = refine_schedule_title(title, body)
                 tm = extract_time(title + " " + body)
                 posts.append({
