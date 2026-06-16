@@ -1792,6 +1792,15 @@
     "source": "google_sheet"
   },
   {
+    "member": "heda",
+    "date": "2026-06-16",
+    "day": "화",
+    "time": "미정",
+    "title": "💙 헤다 보이스 같이보기",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "homiming",
     "date": "2026-06-16",
     "day": "화",
@@ -1843,6 +1852,15 @@
     "day": "수",
     "time": "미정",
     "title": "🐖아뚱 중간계 스크림",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "heda",
+    "date": "2026-06-17",
+    "day": "수",
+    "time": "12:00",
+    "title": "💙 헤다 뱅온",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -2393,6 +2411,15 @@
     "source": "google_sheet"
   },
   {
+    "member": "ggommori",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "💛꼼모리 배그 멸망전",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "heda",
     "date": "2026-06-29",
     "day": "월",
@@ -2461,6 +2488,15 @@
     "day": "월",
     "time": "미정",
     "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "ggommori",
+    "date": "2026-06-30",
+    "day": "화",
+    "time": "미정",
+    "title": "💛꼼모리 배그 멸망전",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
