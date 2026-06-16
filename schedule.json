@@ -2109,7 +2109,7 @@
     "date": "2026-06-22",
     "day": "월",
     "time": "14:00",
-    "title": "뚱딴지 점호 및 유키 컨텐츠 / 뚱딴지 YAPYAP 게임 합방",
+    "title": "뚱딴지 점호 및 유키 컨텐츠 / 뚱딴지 N커넥트 컨텐츠",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -2145,7 +2145,70 @@
     "date": "2026-06-24",
     "day": "수",
     "time": "미정",
-    "title": "🐖아뚱 킴아연님 합방",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "ggommori",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "heda",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "homiming",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "maribyeol",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "neboring",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "niniming",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "peach",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -2154,7 +2217,16 @@
     "date": "2026-06-24",
     "day": "수",
     "time": "미정",
-    "title": "뱅온",
+    "title": "뚱딴지 종겜데이",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-24",
+    "day": "수",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -2267,6 +2339,15 @@
     "source": "google_sheet"
   },
   {
+    "member": "adeung",
+    "date": "2026-06-27",
+    "day": "토",
+    "time": "미정",
+    "title": "🐖아뚱 X 킴아연 리모컨핀볼",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
     "member": "yuki",
     "date": "2026-06-27",
     "day": "토",
@@ -2289,7 +2370,79 @@
     "date": "2026-06-29",
     "day": "월",
     "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "adeung",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
     "title": "🐖아뚱 망구랑 커머스",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "ggommori",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "heda",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "homiming",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "maribyeol",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "neboring",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "niniming",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "peach",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -2299,6 +2452,15 @@
     "day": "월",
     "time": "미정",
     "title": "뱅온",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "member": "yuki",
+    "date": "2026-06-29",
+    "day": "월",
+    "time": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
