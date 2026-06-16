@@ -676,43 +676,21 @@ function fetchLiveStatus() {
     liveRefreshText.textContent = '불러오는 중...';
   }
 
-  fetch('/api/live_status')
-    .then(resp => resp.json())
-    .then(data => {
-      renderLiveStatus(data);
-      if (liveRefreshText) {
-        liveRefreshText.textContent = '업데이트 완료';
-        setTimeout(() => {
-          liveRefreshText.textContent = '새로고침';
-        }, 3000);
-      }
-    })
-    .catch(err => {
-      console.error('Error fetching live status:', err);
-      if (liveGridContainer) {
-        liveGridContainer.innerHTML = `
-          <div class="loading-container" style="grid-column: 1 / -1;">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 28px; color: var(--accent-pink);"></i>
-            <p style="font-size: 13px; color: var(--color-text-secondary);">방송 정보를 불러오지 못했습니다: ${err.message}</p>
-          </div>`;
-      }
-      if (liveRefreshText) {
-        liveRefreshText.textContent = '오류 발생';
-        setTimeout(() => {
-          liveRefreshText.textContent = '새로고침';
-        }, 3000);
-      }
-    })
-    .finally(() => {
-      isFetchingLive = false;
-      if (liveRefreshBtn) {
-        const icon = liveRefreshBtn.querySelector('i');
-        if (icon) icon.classList.remove('spin');
-      }
-    });
-}
+  function fetchLiveStatus() {
+  if (liveGridContainer) {
+    liveGridContainer.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1;">
+        <p>실시간 방송 기능 준비 중</p>
+      </div>
+    `;
+  }
 
-function renderLiveStatus(results) {
+  if (liveRefreshText) {
+    liveRefreshText.textContent = '실시간 방송 기능 준비 중';
+  }
+
+  isFetchingLive = false;
+}
   if (!liveGridContainer || !results) return;
 
   // Render cards sorted: live streams first, then offline streams
