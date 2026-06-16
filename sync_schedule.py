@@ -38,6 +38,12 @@ def remove_time_patterns(text):
     cleaned = re.sub(r'\s*-\s*', ' ', cleaned)
     cleaned = re.sub(r'\s*/\s*', ' ', cleaned)
     cleaned = re.sub(r'\s*~\s*', ' ', cleaned)
+    
+    # Clean up trailing conjunctions and symbols left over after stripping time
+    cleaned = re.sub(r'\s*\b(or|또는|혹은|and|&)\b\s*$', '', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'[\s~/\\\-&,]+$', '', cleaned).strip()
+    cleaned = re.sub(r'^[\s~/\\\-&,]+', '', cleaned).strip()
+    
     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
     return cleaned
 
@@ -116,6 +122,8 @@ def parse_google_sheet(csv_data, member_key):
                 if is_member or is_crew:
                     tm = extract_time(line)
                     line_clean = remove_time_patterns(line)
+                    if not line_clean:
+                        line_clean = "미정"
                     title = ("[크루] " if is_crew else "") + line_clean
                     schedules.append({
                         "member":  member_key,
@@ -268,14 +276,12 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                     if real_content:
                         # Clean up prefixes like emojis and redundant spaces
                         real_content = [re.sub(r"^🔔\s*", "", p).strip() for p in real_content]
+                        # Strip time patterns from each content item
+                        real_content = [remove_time_patterns(p) for p in real_content]
                         real_content = [p for p in real_content if p]
                         
-                        # Apply time pattern removal to each content detail individually first
-                        cleaned_contents = [remove_time_patterns(p) for p in real_content]
-                        cleaned_contents = [p.strip() for p in cleaned_contents if p.strip()]
-                        
                         # Build title from all cleaned content details joined by ' / '
-                        cleaned_title = " / ".join(cleaned_contents) if cleaned_contents else "미정"
+                        cleaned_title = " / ".join(real_content) if real_content else "미정"
                     else:
                         cleaned_title = "미정"
                         
@@ -425,13 +431,15 @@ def refine_schedule_title(title, body):
     if unique_activities:
         final_title = " / ".join(unique_activities[:2])
     else:
-        final_title = "뱅온"
+        final_title = "미정"
     
-    if not final_title or final_title == "뱅온":
+    if not final_title or final_title == "미정":
         clean_raw = re.sub(r'[\U00010000-\U0010ffff]', '', title).strip()
         clean_raw = remove_time_patterns(clean_raw)
-        if clean_raw and clean_raw not in ["뱅온", "공지"]:
+        if clean_raw and clean_raw not in ["뱅온", "공지", "미정"]:
             return clean_raw[:35] + "..." if len(clean_raw) > 35 else clean_raw
+        else:
+            return "미정"
         
     return final_title
 
@@ -483,11 +491,13 @@ def parse_soop_html(html, member_key):
             content = (title + " " + body).lower().replace(" ", "")
             if any(kw in content for kw in all_kws):
                 refined_title = refine_schedule_title(title, body)
+                tm = extract_time(title + " " + body)
                 posts.append({
                     "member": member_key,
                     "date":   date_str,
                     "title":  refined_title,
                     "body":   body,
+                    "time":   tm,
                     "url":    "https://www.sooplive.com" + a["href"]
                 })
                 seen_posts.add(post_id)
@@ -623,7 +633,7 @@ def merge_member(sheet_scheds, soop_notices, member_key):
         title = n["title"]
         body  = n["body"]
         url   = n["url"]
-        tm    = extract_time(title + " " + body)
+        tm    = n.get("time", "미정")
         note  = f"SOOP 공지 참고: {title}"
         if body:
             note += f" ({body[:60]}...)"
