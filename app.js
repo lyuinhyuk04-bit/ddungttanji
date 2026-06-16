@@ -59,29 +59,51 @@ document.body.appendChild(sidebarOverlay);
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  if (!window.APP_CONFIG || !window.APP_SCHEDULE) {
-    weeklyGridContainer.innerHTML = `
-      <div class="loading-container" style="grid-column:span 7">
-        <p style="color:var(--accent-pink);font-size:15px;">⚠️ data.js 파일을 찾을 수 없습니다.</p>
-        <p style="color:var(--color-text-muted);font-size:12px;">
-          먼저 <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;">
-          python sync_schedule.py</code> 를 실행해 주세요.
-        </p>
-      </div>`;
-    return;
+  setupEventListeners();
+
+  let apiSchedulesUrl = '/api/schedules';
+  if (window.location.protocol === 'file:') {
+    apiSchedulesUrl = 'http://localhost:8000/api/schedules';
   }
 
-  appConfig    = window.APP_CONFIG;
-  rawSchedules = window.APP_SCHEDULE;
-  activeMember = appConfig.defaultMember;
+  fetch(apiSchedulesUrl)
+    .then(resp => {
+      if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
+      return resp.json();
+    })
+    .then(data => {
+      appConfig = data.config;
+      rawSchedules = data.schedules;
+      activeMember = appConfig.defaultMember;
 
-  setupEventListeners();
-  renderCrewLinks();
-  renderMembersList();
-  renderActiveMemberProfile();
-  setWeekStartToDate(new Date());
-  renderWeeklySchedule();
-  fetchLiveStatus();
+      renderCrewLinks();
+      renderMembersList();
+      renderActiveMemberProfile();
+      setWeekStartToDate(new Date());
+      renderWeeklySchedule();
+      fetchLiveStatus();
+    })
+    .catch(err => {
+      console.warn('API fetch failed, trying local fallback window data:', err);
+      if (window.APP_CONFIG && window.APP_SCHEDULE) {
+        appConfig = window.APP_CONFIG;
+        rawSchedules = window.APP_SCHEDULE;
+        activeMember = appConfig.defaultMember;
+
+        renderCrewLinks();
+        renderMembersList();
+        renderActiveMemberProfile();
+        setWeekStartToDate(new Date());
+        renderWeeklySchedule();
+        fetchLiveStatus();
+      } else {
+        weeklyGridContainer.innerHTML = `
+          <div class="loading-container" style="grid-column:span 7">
+            <p style="color:var(--accent-pink);font-size:15px;">⚠️ 일정 데이터를 불러오지 못했습니다.</p>
+            <p style="color:var(--color-text-muted);font-size:12px;">로컬 서버(python server.py)가 켜져 있는지 확인해 주세요.</p>
+          </div>`;
+      }
+    });
 });
 
 // ── Event listeners ───────────────────────────────────────────────────────────

@@ -730,15 +730,98 @@ def merge_member(sheet_scheds, soop_notices, member_key):
     return flat
 
 # ── Cumulative save ────────────────────────────────────────────────────────────
-def cumulative_save(new_list, member_key):
-    """Load existing schedule.json, replace entries for this member, keep others."""
-    old_list = []
-    if os.path.exists(SCHEDULE_PATH):
-        try:
-            with open(SCHEDULE_PATH, "r", encoding="utf-8") as f:
-                old_list = json.load(f)
-        except Exception:
+# ── Supabase Integration ──────────────────────────────────────────────────────
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY")
+
+def fetch_supabase_schedules():
+    if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+        return None
+    url = f"{SUPABASE_URL}/rest/v1/schedules?select=*"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": f"Bearer {SUPABASE_ANON_KEY}"
+        }
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        print(f"  [Supabase] Fetch failed: {e}")
+        return None
+
+def save_supabase_schedules(schedules):
+    if not SUPABASE_URL or not SUPABASE_ANON_KEY:
+        return False
+    
+    # 1. Clear existing schedules
+    delete_url = f"{SUPABASE_URL}/rest/v1/schedules?id=not.is.null"
+    delete_req = urllib.request.Request(
+        delete_url,
+        headers={
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": f"Bearer {SUPABASE_ANON_KEY}"
+        },
+        method="DELETE"
+    )
+    try:
+        with urllib.request.urlopen(delete_req, timeout=10) as r:
             pass
+    except Exception as e:
+        print(f"  [Supabase] Clear table failed: {e}")
+        return False
+        
+    # 2. Insert schedules in bulk
+    payload = []
+    for s in schedules:
+        payload.append({
+            "member": s.get("member", ""),
+            "date": s.get("date", ""),
+            "day": s.get("day", ""),
+            "time": s.get("time", "미정"),
+            "title": s.get("title", ""),
+            "note": s.get("note", ""),
+            "source": s.get("source", "manual"),
+            "url": s.get("url", "")
+        })
+        
+    insert_url = f"{SUPABASE_URL}/rest/v1/schedules"
+    insert_req = urllib.request.Request(
+        insert_url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": f"Bearer {SUPABASE_ANON_KEY}",
+            "Content-Type": "application/json"
+        },
+        method="POST"
+    )
+    try:
+        with urllib.request.urlopen(insert_req, timeout=10) as r:
+            pass
+        return True
+    except Exception as e:
+        print(f"  [Supabase] Insert failed: {e}")
+        return False
+
+# ── Cumulative save ────────────────────────────────────────────────────────────
+def cumulative_save(new_list, member_key):
+    """Load existing schedules from Supabase or local schedule.json, replace entries for this member, keep others."""
+    old_list = None
+    if SUPABASE_URL and SUPABASE_ANON_KEY:
+        print("  [Supabase] Loading schedules...")
+        old_list = fetch_supabase_schedules()
+        
+    if old_list is None:
+        old_list = []
+        if os.path.exists(SCHEDULE_PATH):
+            try:
+                with open(SCHEDULE_PATH, "r", encoding="utf-8") as f:
+                    old_list = json.load(f)
+            except Exception:
+                pass
 
     today_str = NOW.strftime("%Y-%m-%d")
 
@@ -772,8 +855,16 @@ def cumulative_save(new_list, member_key):
             seen.add(key)
             deduped.append(s)
 
-    with open(SCHEDULE_PATH, "w", encoding="utf-8") as f:
-        json.dump(deduped, f, ensure_ascii=False, indent=2)
+    if SUPABASE_URL and SUPABASE_ANON_KEY:
+        print("  [Supabase] Saving updated schedules...")
+        save_supabase_schedules(deduped)
+
+    # Save to local file as fallback cache
+    try:
+        with open(SCHEDULE_PATH, "w", encoding="utf-8") as f:
+            json.dump(deduped, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"  Failed to save local cache: {e}")
 
     return deduped
 

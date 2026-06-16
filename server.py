@@ -113,6 +113,49 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
                 self.wfile.write(json.dumps(results, ensure_ascii=False).encode('utf-8'))
+            elif self.path == '/api/schedules':
+                config_path = "config.json"
+                config = {}
+                if os.path.exists(config_path):
+                    with open(config_path, "r", encoding="utf-8") as f:
+                        config = json.load(f)
+                
+                schedules = None
+                supabase_url = os.environ.get("SUPABASE_URL")
+                supabase_anon_key = os.environ.get("SUPABASE_ANON_KEY")
+                if supabase_url and supabase_anon_key:
+                    url = f"{supabase_url}/rest/v1/schedules?select=*"
+                    req = urllib.request.Request(
+                        url,
+                        headers={
+                            "apikey": supabase_anon_key,
+                            "Authorization": f"Bearer {supabase_anon_key}"
+                        }
+                    )
+                    try:
+                        ctx = ssl.create_default_context()
+                        ctx.check_hostname = False
+                        ctx.verify_mode = ssl.CERT_NONE
+                        with urllib.request.urlopen(req, context=ctx, timeout=5) as r:
+                            schedules = json.loads(r.read().decode("utf-8"))
+                            schedules.sort(key=lambda x: (x.get("date",""), x.get("member",""), x.get("time","")))
+                    except Exception as e:
+                        print(f"  [Server] Supabase fetch failed: {e}")
+                
+                if schedules is None:
+                    schedules = []
+                    schedule_path = "schedule.json"
+                    if os.path.exists(schedule_path):
+                        with open(schedule_path, "r", encoding="utf-8") as f:
+                            schedules = json.load(f)
+                
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                res_payload = {"config": config, "schedules": schedules}
+                self.wfile.write(json.dumps(res_payload, ensure_ascii=False).encode('utf-8'))
             else:
                 super().do_GET()
         except Exception as e:
@@ -129,13 +172,65 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
             try:
                 new_schedules = json.loads(post_data.decode('utf-8'))
                 
-                # Save to schedule.json
-                with open("schedule.json", "w", encoding="utf-8") as f:
-                    json.dump(new_schedules, f, ensure_ascii=False, indent=2)
+                supabase_url = os.environ.get("SUPABASE_URL")
+                supabase_anon_key = os.environ.get("SUPABASE_ANON_KEY")
                 
-                # Regenerate data.js
-                with open("config.json", "r", encoding="utf-8") as f:
-                    config = json.load(f)
+                if supabase_url and supabase_anon_key:
+                    ctx = ssl.create_default_context()
+                    ctx.check_hostname = False
+                    ctx.verify_mode = ssl.CERT_NONE
+                    
+                    # 1. Clear existing schedules
+                    delete_url = f"{supabase_url}/rest/v1/schedules?id=not.is.null"
+                    delete_req = urllib.request.Request(
+                        delete_url,
+                        headers={
+                            "apikey": supabase_anon_key,
+                            "Authorization": f"Bearer {supabase_anon_key}"
+                        },
+                        method="DELETE"
+                    )
+                    with urllib.request.urlopen(delete_req, context=ctx, timeout=10) as r:
+                        pass
+                        
+                    # 2. Insert new records in bulk
+                    payload = []
+                    for s in new_schedules:
+                        payload.append({
+                            "member": s.get("member", ""),
+                            "date": s.get("date", ""),
+                            "day": s.get("day", ""),
+                            "time": s.get("time", "미정"),
+                            "title": s.get("title", ""),
+                            "note": s.get("note", ""),
+                            "source": s.get("source", "manual"),
+                            "url": s.get("url", "")
+                        })
+                        
+                    insert_url = f"{supabase_url}/rest/v1/schedules"
+                    insert_req = urllib.request.Request(
+                        insert_url,
+                        data=json.dumps(payload).encode("utf-8"),
+                        headers={
+                            "apikey": supabase_anon_key,
+                            "Authorization": f"Bearer {supabase_anon_key}",
+                            "Content-Type": "application/json"
+                        },
+                        method="POST"
+                    )
+                    with urllib.request.urlopen(insert_req, context=ctx, timeout=10) as r:
+                        pass
+                    print("  [Server] Saved to Supabase successfully")
+                else:
+                    with open("schedule.json", "w", encoding="utf-8") as f:
+                        json.dump(new_schedules, f, ensure_ascii=False, indent=2)
+                    print("  [Server] Saved to schedule.json successfully")
+                
+                # Regenerate local data.js cache
+                config = {}
+                if os.path.exists("config.json"):
+                    with open("config.json", "r", encoding="utf-8") as f:
+                        config = json.load(f)
                 
                 config_js = json.dumps(config, ensure_ascii=False)
                 sched_js  = json.dumps(new_schedules, ensure_ascii=False)
@@ -153,14 +248,13 @@ window.APP_SCHEDULE = {sched_js};
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
                 self.wfile.write(json.dumps({"status": "ok", "message": "Saved successfully"}).encode('utf-8'))
-                print("  [API] Saved schedule.json and data.js successfully")
             except Exception as e:
                 self.send_response(500)
                 self.send_header('Content-Type', 'application/json')
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
                 self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode('utf-8'))
-                print(f"  [API] Error saving schedule: {e}")
+                print(f"  [Server] Error saving schedule: {e}")
         else:
             self.send_response(404)
             self.end_headers()

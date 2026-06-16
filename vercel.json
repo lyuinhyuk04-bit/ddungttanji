@@ -15,6 +15,10 @@
       "dest": "/api/save_schedule.js"
     },
     {
+      "src": "/api/schedules",
+      "dest": "/api/schedules.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
