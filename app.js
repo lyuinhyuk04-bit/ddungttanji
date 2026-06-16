@@ -676,7 +676,7 @@ function fetchLiveStatus() {
     liveRefreshText.textContent = '불러오는 중...';
   }
 
-  fetch('/api/live_status')
+  return;
     .then(resp => resp.json())
     .then(data => {
       renderLiveStatus(data);
