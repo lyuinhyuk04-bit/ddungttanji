@@ -4,8 +4,12 @@ import csv
 import json
 import urllib.request
 import io
+import sys
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+
+# Ensure stdout uses UTF-8 to prevent encoding crashes on Windows console when printing emojis
+sys.stdout.reconfigure(encoding='utf-8')
 
 # ── Configuration ─────────────────────────────────────────────────────────────
 CONFIG_PATH   = "config.json"
@@ -330,9 +334,9 @@ def parse_monthly_grid_sheet(csv_data, member_key):
         
     return schedules
 
-# ── SOOP Selenium ──────────────────────────────────────────────────────────────
-def fetch_soop_board(board_url):
-    """Fetch a single SOOP board page and return its HTML."""
+# ── Selenium HTML Fetcher ──────────────────────────────────────────────────────
+def fetch_html_selenium(url):
+    """Fetch any page using Selenium headless Chrome and return HTML."""
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     import time
@@ -343,13 +347,13 @@ def fetch_soop_board(board_url):
     opts.add_argument("--disable-dev-shm-usage")
     try:
         d = webdriver.Chrome(options=opts)
-        d.get(board_url)
+        d.get(url)
         time.sleep(5)
         html = d.page_source
         d.quit()
         return html
     except Exception as e:
-        print(f"  Selenium failed for {board_url}: {e}")
+        print(f"  Selenium failed for {url}: {e}")
         try: d.quit()
         except: pass
         return None
@@ -552,7 +556,8 @@ def parse_soop_html(html, member_key):
                     "title":  refined_title,
                     "body":   body,
                     "time":   tm,
-                    "url":    "https://www.sooplive.com" + a["href"]
+                    "url":    "https://www.sooplive.com" + a["href"],
+                    "source": "soop"
                 })
                 seen_posts.add(post_id)
     return posts
@@ -673,60 +678,278 @@ def extract_time(text):
         return "미정"
     return format_time_info(best_t)
 
-# ── Merge sheet + SOOP for one member ─────────────────────────────────────────
-def merge_member(sheet_scheds, soop_notices, member_key):
+# ── Naver Cafe Scraping ────────────────────────────────────────────────────────
+def parse_cafe_html(html, member_key):
+    if not html:
+        return []
+    soup = BeautifulSoup(html, "html.parser")
+    posts = []
+    seen_urls = set()
+    
+    # Naver Cafe mobile links class is usually 'mainLink' or they contain 'ArticleRead.nhn'
+    for a in soup.find_all("a"):
+        href = a.get("href", "")
+        classes = a.get("class", [])
+        if "mainLink" in classes or "ArticleRead.nhn" in href:
+            if href in seen_urls:
+                continue
+            text = a.get_text(strip=True)
+            if not text:
+                continue
+                
+            # Date pattern: YY.MM.DD
+            m = re.search(r"(\d{2})\.(\d{2})\.(\d{2})", text)
+            if not m:
+                continue
+                
+            yy, mm, dd = m.group(1), m.group(2), m.group(3)
+            date_str = f"20{yy}-{mm}-{dd}"
+            
+            # Title is the text before author name/date or just the main content.
+            date_index = text.find(f"{yy}.{mm}.{dd}")
+            if date_index != -1:
+                title_part = text[:date_index].strip()
+            else:
+                title_part = text.strip()
+                
+            # Remove member name from title if it ends with it (e.g. "호미밍")
+            member_name = MEMBERS[member_key]["name"]
+            if title_part.endswith(member_name):
+                title_part = title_part[:-len(member_name)].strip()
+            
+            # Remove leading "공지"
+            if title_part.startswith("공지"):
+                title_part = title_part[2:].strip()
+                
+            # Check for rest day
+            if any(h in title_part for h in ["휴방", "휴뱅", "휴빵", "쉬어", "쉬고", "쉬겠", "쉽니다", "쉬다"]):
+                title = "휴방"
+                tm = "미정"
+            else:
+                tm = extract_time(title_part)
+                title = remove_time_patterns(title_part)
+                if not title or title in ["뱅온", "공지", "미정"]:
+                    title = "미정"
+                    
+            # Full URL
+            full_url = href
+            if href.startswith("/"):
+                full_url = "https://m.cafe.naver.com" + href
+                
+            posts.append({
+                "member": member_key,
+                "date": date_str,
+                "day": "", # will be populated in merge
+                "time": tm,
+                "title": title,
+                "note": "네이버 카페 공지 기준",
+                "source": "naver_cafe",
+                "url": full_url
+            })
+            seen_urls.add(href)
+            
+    return posts
+
+def extract_latest_cafe_article_info(html, member_key):
+    soup = BeautifulSoup(html, "html.parser")
+    for a in soup.find_all("a"):
+        href = a.get("href", "")
+        classes = a.get("class", [])
+        if "mainLink" in classes or "ArticleRead.nhn" in href:
+            text = a.get_text(strip=True)
+            m = re.search(r"(\d{2})\.(\d{2})\.(\d{2})", text)
+            if m:
+                yy, mm, dd = m.group(1), m.group(2), m.group(3)
+                post_date = f"20{yy}-{mm}-{dd}"
+                date_idx = text.find(f"{yy}.{mm}.{dd}")
+                title = text[:date_idx].strip() if date_idx != -1 else text.strip()
+                if title.endswith("호미밍"):
+                    title = title[:-3].strip()
+                if title.startswith("공지"):
+                    title = title[2:].strip()
+                
+                # Check for schedule keywords
+                if not any(kw in title for kw in ["일정", "스케줄", "스케쥴", "시간표"]):
+                    continue
+                    
+                full_url = href
+                if href.startswith("/"):
+                    full_url = "https://m.cafe.naver.com" + href
+                return {
+                    "url": full_url,
+                    "title": title,
+                    "date": post_date
+                }
+    return None
+
+def download_cafe_image(url, dest_path):
+    try:
+        base_url = url.split("?")[0]
+        # Try different formats/qualities of Naver images
+        for quality in ["?type=w1080", "?type=org", ""]:
+            target_url = base_url + quality
+            req = urllib.request.Request(target_url)
+            req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+            req.add_header('Referer', 'https://cafe.naver.com/mingout')
+            try:
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = resp.read()
+                    if len(data) > 1000:
+                        with open(dest_path, "wb") as f:
+                            f.write(data)
+                        print(f"  [Cafe Image] Downloaded image: {target_url}")
+                        return True
+            except Exception as e:
+                print(f"  [Cafe Image] Download failed for {target_url}: {e}")
+    except Exception as e:
+        print(f"  [Cafe Image] Error downloading image: {e}")
+    return False
+
+def scrape_homiming_cafe_image_schedule(cafe_url, member_key):
+    print(f"  [Cafe Image] Fetching Cafe menu: {cafe_url}")
+    html = fetch_html_selenium(cafe_url)
+    if not html:
+        print(f"  [Cafe Image] Failed to fetch Cafe menu")
+        return []
+        
+    # Step 1: Save cafe_source.html
+    cafe_source_path = "scratch/cafe_source.html"
+    os.makedirs("scratch", exist_ok=True)
+    with open(cafe_source_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"  [Cafe Image] Saved Cafe menu HTML to {cafe_source_path}")
+    
+    # Step 2: Extract latest article info
+    article_info = extract_latest_cafe_article_info(html, member_key)
+    if not article_info:
+        print(f"  [Cafe Image] Failed to find schedule article link in menu")
+        return []
+        
+    print(f"  [Cafe Image] Latest article: {article_info['title']} ({article_info['url']})")
+    
+    # Step 3: Fetch article page
+    print(f"  [Cafe Image] Loading article page...")
+    article_html = fetch_html_selenium(article_info["url"])
+    if not article_html:
+        print(f"  [Cafe Image] Failed to fetch article page")
+        return []
+        
+    # Step 4: Extract schedule image URL
+    soup = BeautifulSoup(article_html, "html.parser")
+    image_url = None
+    for img in soup.find_all("img"):
+        src = img.get("src", "")
+        data_lazy = img.get("data-lazy-src", "")
+        actual_src = data_lazy if data_lazy else src
+        if not actual_src:
+            continue
+        if any(domain in actual_src for domain in ["postfiles.pstatic.net", "post.phinf.naver.net", "cafeptthumb"]):
+            image_url = actual_src
+            break
+            
+    if not image_url:
+        print(f"  [Cafe Image] Failed to find schedule image in article body")
+        return []
+        
+    print(f"  [Cafe Image] Found schedule image URL: {image_url}")
+    
+    # Step 5: Download image
+    image_path = "scratch/homiming_schedule.png"
+    downloaded = download_cafe_image(image_url, image_path)
+    
+    # Step 6: Write metadata file
+    metadata = {
+        "member": member_key,
+        "article_url": article_info["url"],
+        "image_url": image_url,
+        "article_title": article_info["title"],
+        "post_date": article_info["date"]
+    }
+    metadata_path = "scratch/cafe_article_metadata.json"
+    with open(metadata_path, "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2)
+        
+    # Step 7: Parse using parse_cafe_articles.py
+    try:
+        import parse_cafe_articles
+        parsed_scheds = parse_cafe_articles.parse_and_process()
+        if parsed_scheds:
+            return parsed_scheds
+        else:
+            raise Exception("Parser returned no schedules")
+    except Exception as e:
+        print(f"  [Cafe Image] OCR parsing failed, using fallback: {e}")
+        try:
+            import parse_cafe_articles
+            return parse_cafe_articles.generate_fallback_schedules(member_key, article_info["url"], image_url, article_info["date"])
+        except Exception as fallback_err:
+            print(f"  [Cafe Image] Fallback generator failed: {fallback_err}")
+            return []
+
+# ── Merge all sources with priorities ──────────────────────────────────────────
+def merge_member_sources(sheet_scheds, cafe_scheds, soop_scheds, member_key):
     day_map = {"Mon":"월","Tue":"화","Wed":"수","Thu":"목",
                "Fri":"금","Sat":"토","Sun":"일"}
     merged = {}
-
-    for s in sheet_scheds:
-        merged.setdefault(s["date"], []).append(s)
-
-    for n in soop_notices:
-        date  = n["date"]
-        title = n["title"]
-        body  = n["body"]
-        url   = n["url"]
-        tm    = n.get("time", "미정")
-        note  = f"SOOP 공지 참고: {title}"
-        if body:
-            note += f" ({body[:60]}...)"
-        day_kor = day_map.get(datetime.strptime(date, "%Y-%m-%d").strftime("%a"), "")
-
-        item = {
-            "member": member_key,
-            "date":   date,
-            "day":    day_kor,
-            "time":   tm,
-            "title":  title,
-            "note":   note,
-            "source": "soop",
-            "url":    url
-        }
-
-        if date not in merged:
-            merged[date] = [item]
-        else:
-            has_personal = any(
-                x["source"] == "google_sheet" and not x["title"].startswith("[크루]")
-                for x in merged[date]
-            )
-            if not has_personal:
-                # Deduplicate: don't add if same title already exists
-                existing_titles = {x["title"] for x in merged[date]}
-                if title not in existing_titles:
-                    merged[date].append(item)
-            else:
-                for x in merged[date]:
-                    if x["source"] == "google_sheet" and not x["title"].startswith("[크루]"):
-                        if x["time"] == "미정" and tm != "미정":
-                            x["time"] = tm
-                        x["note"] += " / SOOP 공지로 보완됨"
-                        x["url"] = url
-
+    
+    all_items = []
+    if sheet_scheds:
+        for x in sheet_scheds:
+            if "source" not in x: x["source"] = "google_sheet"
+        all_items.extend(sheet_scheds)
+    if cafe_scheds:
+        for x in cafe_scheds:
+            if "source" not in x: x["source"] = "naver_cafe"
+        all_items.extend(cafe_scheds)
+    if soop_scheds:
+        for x in soop_scheds:
+            if "source" not in x: x["source"] = "soop"
+        all_items.extend(soop_scheds)
+        
+    for item in all_items:
+        date = item["date"]
+        merged.setdefault(date, []).append(item)
+        
     flat = []
-    for _, items in sorted(merged.items()):
-        flat.extend(items)
+    for date, items in sorted(merged.items()):
+        # Split items into crew and personal
+        crew_items = [x for x in items if x["title"].startswith("[크루]")]
+        personal_items = [x for x in items if not x["title"].startswith("[크루]")]
+        
+        # Keep all unique crew items
+        unique_crew = []
+        seen_crew = set()
+        for x in crew_items:
+            key = (x["title"], x.get("time", "미정"))
+            if key not in seen_crew:
+                seen_crew.add(key)
+                unique_crew.append(x)
+                
+        # For personal items, apply priority rules:
+        # Priority: 1. google_sheet, 2. naver_cafe, 3. soop
+        selected_personal = []
+        if personal_items:
+            # Group personal items by source
+            by_source = {}
+            for x in personal_items:
+                by_source.setdefault(x["source"], []).append(x)
+                
+            # Choose the highest priority source available
+            if "google_sheet" in by_source:
+                selected_personal = by_source["google_sheet"]
+            elif "naver_cafe_image" in by_source:
+                selected_personal = by_source["naver_cafe_image"]
+            elif "naver_cafe" in by_source:
+                selected_personal = by_source["naver_cafe"]
+            elif "soop" in by_source:
+                selected_personal = by_source["soop"]
+                
+        # Populate day name for all selected items
+        day_kor = day_map.get(datetime.strptime(date, "%Y-%m-%d").strftime("%a"), "")
+        for x in unique_crew + selected_personal:
+            x["day"] = day_kor
+            flat.append(x)
+            
     return flat
 
 # ── Cumulative save ────────────────────────────────────────────────────────────
@@ -850,7 +1073,7 @@ def cumulative_save(new_list, member_key):
     seen = set()
     deduped = []
     for s in combined:
-        key = (s.get('member',''), s['date'], s.get('title','')[:30])
+        key = (s.get('member',''), s['date'], s.get('time','미정'), s.get('title','')[:30])
         if key not in seen:
             seen.add(key)
             deduped.append(s)
@@ -891,7 +1114,7 @@ def main():
     for member_key, member_info in MEMBERS.items():
         print(f"\n--- Processing: {member_info['name']} ({member_key}) ---")
 
-        # 1. Parse this member's schedule from sheet(s)
+        # 1. Parse this member's schedule from sheet(s) (Priority 1)
         personal_sheet_url = member_info.get("sheetUrl")
         if personal_sheet_url:
             print(f"  Fetching personal sheet: {personal_sheet_url}")
@@ -906,11 +1129,30 @@ def main():
             sheet_scheds = parse_google_sheet(csv_data, member_key)
         print(f"  Sheet entries (total): {len(sheet_scheds)}")
 
-        # 2. Scrape each of their SOOP boards
+        # 2. Scrape Naver Cafe (Priority 2)
+        cafe_scheds = []
+        cafe_url = member_info.get("cafeUrl")
+        if cafe_url:
+            if member_key == "homiming":
+                try:
+                    cafe_scheds = scrape_homiming_cafe_image_schedule(cafe_url, member_key)
+                except Exception as scrap_err:
+                    print(f"  Failed to scrape and parse Homiming Cafe image: {scrap_err}")
+                print(f"  Naver Cafe Image entries: {len(cafe_scheds)}")
+            else:
+                print(f"  Fetching Naver Cafe: {cafe_url}")
+                html = fetch_html_selenium(cafe_url)
+                if html:
+                    cafe_scheds = parse_cafe_html(html, member_key)
+                    print(f"  Naver Cafe entries: {len(cafe_scheds)}")
+                else:
+                    print(f"  Failed to fetch Naver Cafe")
+
+        # 3. Scrape each of their SOOP boards (Priority 3)
         soop_all = {}   # keyed by date to deduplicate across boards
         for board_url in member_info.get("soopBoards", []):
             print(f"  Fetching SOOP board: {board_url}")
-            html = fetch_soop_board(board_url)
+            html = fetch_html_selenium(board_url)
             if html:
                 notices = parse_soop_html(html, member_key)
                 print(f"    -> {len(notices)} notices found")
@@ -926,14 +1168,14 @@ def main():
         soop_notices = list(soop_all.values())
         print(f"  Total unique SOOP notices: {len(soop_notices)}")
 
-        # 3. Merge
-        merged = merge_member(sheet_scheds, soop_notices, member_key)
+        # 4. Merge all sources using the priority rules
+        merged = merge_member_sources(sheet_scheds, cafe_scheds, soop_notices, member_key)
         print(f"  Merged entries: {len(merged)}")
 
-        # 4. Cumulative save (preserves other members + past entries)
+        # 5. Cumulative save (preserves other members + past entries)
         all_schedules = cumulative_save(merged, member_key)
 
-    # 5. Generate data.js with everything
+    # 6. Generate data.js with everything
     generate_data_js(all_schedules)
     print("\nDone OK")
 
