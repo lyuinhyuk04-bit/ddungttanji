@@ -680,6 +680,32 @@ def extract_time(text):
     return format_time_info(best_t)
 
 # ── Naver Cafe Scraping ────────────────────────────────────────────────────────
+def normalize_naver_cafe_url(url):
+    if not url:
+        return url
+    if "m.cafe.naver.com" in url:
+        return url
+        
+    m = re.search(r"cafe\.naver\.com/[^/]+/cafes/(\d+)/menus/(\d+)", url, re.IGNORECASE)
+    if m:
+        club_id, menu_id = m.group(1), m.group(2)
+        return f"https://m.cafe.naver.com/ca-fe/web/cafes/{club_id}/menus/{menu_id}"
+        
+    if "ArticleList.nhn" in url or "ArticleRead.nhn" in url or "ArticleList" in url:
+        club_match = re.search(r"search\.clubid=(\d+)", url, re.IGNORECASE)
+        menu_match = re.search(r"search\.menuid=(\d+)", url, re.IGNORECASE)
+        if club_match and menu_match:
+            club_id = club_match.group(1)
+            menu_id = menu_match.group(1)
+            return f"https://m.cafe.naver.com/ca-fe/web/cafes/{club_id}/menus/{menu_id}"
+
+    m2 = re.search(r"cafe\.naver\.com/ca-fe/cafes/(\d+)/menus/(\d+)", url, re.IGNORECASE)
+    if m2:
+        club_id, menu_id = m2.group(1), m2.group(2)
+        return f"https://m.cafe.naver.com/ca-fe/web/cafes/{club_id}/menus/{menu_id}"
+        
+    return url
+
 def parse_cafe_html(html, member_key):
     if not html:
         return []
@@ -1149,6 +1175,7 @@ def main():
         cafe_scheds = []
         cafe_url = member_info.get("cafeUrl")
         if cafe_url:
+            cafe_url = normalize_naver_cafe_url(cafe_url)
             if member_key == "homiming":
                 try:
                     cafe_scheds = scrape_homiming_cafe_image_schedule(cafe_url, member_key)

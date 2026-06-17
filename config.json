@@ -50,7 +50,8 @@
       "soopId": "donggeul2",
       "soopBoards": [
         "https://www.sooplive.com/station/donggeul2/board/104919443"
-      ]
+      ],
+      "cafeUrl": "https://cafe.naver.com/f-e/cafes/30752173/menus/35?viewType=I"
     },
     "peach": {
       "name": "피치",
@@ -86,7 +87,8 @@
       "soopId": "heda221112",
       "soopBoards": [
         "https://www.sooplive.com/station/heda221112/board/97339768"
-      ]
+      ],
+      "sheetUrl": "https://docs.google.com/spreadsheets/d/1Va6JLORw-t1z5rVOXTnTzi1rWnjDg50W6zRiKzpmRWE/export?format=csv&gid=0"
     }
   }
 }
