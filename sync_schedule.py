@@ -1101,10 +1101,19 @@ def cumulative_save(new_list, member_key):
                      if s.get("member") == member_key and s["date"] < today_str and s.get("source") != "manual"]
     new_this       = [s for s in new_list if s["date"] >= today_str and s["date"] not in manual_dates]
 
-    # Also add any new past entries not already saved
+    # Also add any new past entries not already saved or override fallbacks
+    dates_with_new_entries = {s["date"] for s in new_list}
+    fallback_dates = set()
+    for date in dates_with_new_entries:
+        existing = [x for x in old_this_past if x["date"] == date]
+        if existing and all("일정 확인 중" in x.get("title", "") for x in existing):
+            fallback_dates.add(date)
+            
+    old_this_past = [x for x in old_this_past if not (x["date"] in fallback_dates and "일정 확인 중" in x.get("title", ""))]
+    
     old_past_dates = {s["date"] for s in old_this_past}
     for s in new_list:
-        if s["date"] < today_str and s["date"] not in old_past_dates and s["date"] not in manual_dates:
+        if s["date"] < today_str and (s["date"] not in old_past_dates or s["date"] in fallback_dates) and s["date"] not in manual_dates:
             old_this_past.append(s)
 
     combined = sorted(
