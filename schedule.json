@@ -1,7 +1,7 @@
 [
   {
-    "id": 671,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3087,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2025-04-08",
     "day": "화",
@@ -12,8 +12,92 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/156607675"
   },
   {
-    "id": 672,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3088,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-16",
+    "day": "월",
+    "time": "미정",
+    "title": "카페탐밤&카트러쉬",
+    "note": "ogni 카트똥0 tel / 면접",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3089,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-17",
+    "day": "화",
+    "time": "미정",
+    "title": "효방",
+    "note": "ao / gyal 숙제&베이림",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3090,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-18",
+    "day": "수",
+    "time": "미정",
+    "title": "b 카페탐방 _",
+    "note": "메이플스토리 육성 / ZDstut / aa / (천양유 으면서, aah)",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3091,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-19",
+    "day": "목",
+    "time": "미정",
+    "title": "이번주;3주년기년",
+    "note": "네이버 카페 이미지 일정 기준",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3092,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-20",
+    "day": "금",
+    "time": "미정",
+    "title": "ㆍ‥…",
+    "note": "sac / a / es” 메이플스토리 / (ate) / en 만들기",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3093,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-21",
+    "day": "토",
+    "time": "17:00",
+    "title": "Ue 카퍼탐방",
+    "note": "밍마카세 / 오$저니랜드",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3094,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "homiming",
+    "date": "2025-06-22",
+    "day": "일",
+    "time": "미정",
+    "title": "QA WIS",
+    "note": "케이크 베이킹",
+    "source": "naver_cafe_image",
+    "url": "https://m.cafe.naver.com/ArticleRead.nhn?clubid=30752173&articleid=15767&boardtype=L&menuid=35"
+  },
+  {
+    "id": 3095,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-04-28",
     "day": "화",
@@ -24,8 +108,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/194116063"
   },
   {
-    "id": 673,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3096,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-05-05",
     "day": "화",
@@ -36,8 +120,8 @@
     "url": "https://www.sooplive.com/station/amaiyk0105/post/194866769"
   },
   {
-    "id": 674,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3097,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-05-06",
     "day": "수",
@@ -48,18 +132,20 @@
     "url": "https://www.sooplive.com/station/amaiyk0105/post/194943969"
   },
   {
+    "id": 3098,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-05-13",
-    "title": "빙하기 공지",
-    "body": "여러분 제가 이사로 인해 오늘부터 23일까지 쉬게 되었습니다ㅠ.ㅠ방송을 통해 얘기는 했지만공지로는 못 올린 것 같아 공지 씁니다-!저는 5월 24일 누헤다로 오겠습니단 ㅎㅎㅎ그동안 아푸지말고 밥 잘 먹고앵간하면 산책 자제하구..^_________^잘 기댕기구 이써다녀올게-!",
+    "day": "수",
     "time": "미정",
-    "url": "https://www.sooplive.com/station/heda221112/post/195580005",
+    "title": "빙하기 공지",
+    "note": "",
     "source": "soop",
-    "day": "수"
+    "url": "https://www.sooplive.com/station/heda221112/post/195580005"
   },
   {
-    "id": 675,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3099,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-05-13",
     "day": "수",
@@ -70,8 +156,8 @@
     "url": "https://www.sooplive.com/station/amaiyk0105/post/195591235"
   },
   {
-    "id": 676,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3100,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-05-14",
     "day": "목",
@@ -82,8 +168,8 @@
     "url": "https://www.sooplive.com/station/amaiyk0105/post/195738601"
   },
   {
-    "id": 677,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3101,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-05-28",
     "day": "목",
@@ -94,18 +180,20 @@
     "url": "https://www.sooplive.com/station/amaiyk0105/post/197033037"
   },
   {
+    "id": 3102,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-05-30",
-    "title": "휴방",
-    "body": "30",
+    "day": "토",
     "time": "미정",
-    "url": "https://www.sooplive.com/station/heda221112/post/197207885",
+    "title": "휴방",
+    "note": "",
     "source": "soop",
-    "day": "토"
+    "url": "https://www.sooplive.com/station/heda221112/post/197207885"
   },
   {
-    "id": 678,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3103,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-05-30",
     "day": "토",
@@ -116,8 +204,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197204073"
   },
   {
-    "id": 679,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3104,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-05-30",
     "day": "토",
@@ -128,18 +216,20 @@
     "url": "https://www.sooplive.com/station/niniming/post/197195527"
   },
   {
+    "id": 3105,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-05-31",
-    "title": "꼼모리가 오늘 아파요ㅠㅠ병원 다녀와야 할 것 같아서 시간 미뤄야...",
-    "body": "26",
+    "day": "일",
     "time": "17:30",
-    "url": "https://www.sooplive.com/station/heda221112/post/197294835",
+    "title": "꼼모리가 오늘 아파요ㅠㅠ병원 다녀와야 할 것 같아서 시간 미뤄야...",
+    "note": "",
     "source": "soop",
-    "day": "일"
+    "url": "https://www.sooplive.com/station/heda221112/post/197294835"
   },
   {
-    "id": 680,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3106,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-05-31",
     "day": "일",
@@ -150,8 +240,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197379911"
   },
   {
-    "id": 681,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3107,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-05-31",
     "day": "일",
@@ -162,18 +252,20 @@
     "url": "https://www.sooplive.com/station/niniming/post/197302115"
   },
   {
+    "id": 3108,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-01",
-    "title": "감니버스 컨텐츠",
-    "body": "43",
+    "day": "월",
     "time": "12:00",
-    "url": "https://www.sooplive.com/station/heda221112/post/197469329",
+    "title": "감니버스 컨텐츠",
+    "note": "",
     "source": "soop",
-    "day": "월"
+    "url": "https://www.sooplive.com/station/heda221112/post/197469329"
   },
   {
-    "id": 682,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3109,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-01",
     "day": "월",
@@ -184,8 +276,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197388987"
   },
   {
-    "id": 683,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3110,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-01",
     "day": "월",
@@ -196,8 +288,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/197467717"
   },
   {
-    "id": 684,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3111,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-01",
     "day": "월",
@@ -208,8 +300,8 @@
     "url": ""
   },
   {
-    "id": 685,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3112,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-02",
     "day": "화",
@@ -220,8 +312,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197484209"
   },
   {
-    "id": 686,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3113,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-02",
     "day": "화",
@@ -232,8 +324,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/197509367"
   },
   {
-    "id": 687,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3114,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-02",
     "day": "화",
@@ -244,18 +336,20 @@
     "url": ""
   },
   {
+    "id": 3115,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-03",
-    "title": "2시 컨텐츠",
-    "body": "22",
+    "day": "수",
     "time": "12:00",
-    "url": "https://www.sooplive.com/station/heda221112/post/197676915",
+    "title": "2시 컨텐츠",
+    "note": "",
     "source": "soop",
-    "day": "수"
+    "url": "https://www.sooplive.com/station/heda221112/post/197676915"
   },
   {
-    "id": 688,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3116,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-03",
     "day": "수",
@@ -266,8 +360,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197661081"
   },
   {
-    "id": 689,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3117,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-03",
     "day": "수",
@@ -278,8 +372,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197592253"
   },
   {
-    "id": 690,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3118,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-03",
     "day": "수",
@@ -290,8 +384,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/197669617"
   },
   {
-    "id": 691,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3119,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-03",
     "day": "수",
@@ -302,8 +396,8 @@
     "url": ""
   },
   {
-    "id": 692,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3120,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-04",
     "day": "목",
@@ -314,8 +408,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/197754677"
   },
   {
-    "id": 693,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3121,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-04",
     "day": "목",
@@ -326,8 +420,8 @@
     "url": "https://www.sooplive.com/station/et0726/post/197696807"
   },
   {
-    "id": 694,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3122,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-04",
     "day": "목",
@@ -338,8 +432,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197763143"
   },
   {
-    "id": 695,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3123,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-04",
     "day": "목",
@@ -350,8 +444,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197681889"
   },
   {
-    "id": 696,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3124,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-04",
     "day": "목",
@@ -362,18 +456,20 @@
     "url": ""
   },
   {
+    "id": 3125,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-05",
-    "title": "철권",
-    "body": "21",
+    "day": "금",
     "time": "18:30",
-    "url": "https://www.sooplive.com/station/heda221112/post/197800571",
+    "title": "철권",
+    "note": "",
     "source": "soop",
-    "day": "금"
+    "url": "https://www.sooplive.com/station/heda221112/post/197800571"
   },
   {
-    "id": 697,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3126,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-05",
     "day": "금",
@@ -384,8 +480,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197785445"
   },
   {
-    "id": 698,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3127,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-05",
     "day": "금",
@@ -396,8 +492,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197782181"
   },
   {
-    "id": 699,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3128,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-05",
     "day": "금",
@@ -408,8 +504,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/197805131"
   },
   {
-    "id": 700,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3129,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-05",
     "day": "금",
@@ -420,8 +516,8 @@
     "url": ""
   },
   {
-    "id": 701,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3130,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-06",
     "day": "토",
@@ -432,18 +528,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/197890633"
   },
   {
+    "id": 3131,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-06",
-    "title": "가족들 이제 가심곧 킬게요!!",
-    "body": "21",
+    "day": "토",
     "time": "미정",
-    "url": "https://www.sooplive.com/station/heda221112/post/197901989",
+    "title": "가족들 이제 가심곧 킬게요!!",
+    "note": "",
     "source": "soop",
-    "day": "토"
+    "url": "https://www.sooplive.com/station/heda221112/post/197901989"
   },
   {
-    "id": 702,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3132,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-06",
     "day": "토",
@@ -454,8 +552,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/197946095"
   },
   {
-    "id": 703,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3133,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-06",
     "day": "토",
@@ -466,8 +564,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/197875081"
   },
   {
-    "id": 704,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3134,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-06",
     "day": "토",
@@ -478,8 +576,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/197902637"
   },
   {
-    "id": 705,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3135,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-06",
     "day": "토",
@@ -490,8 +588,8 @@
     "url": ""
   },
   {
-    "id": 706,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3136,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-07",
     "day": "일",
@@ -502,8 +600,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198062121"
   },
   {
-    "id": 707,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3137,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-07",
     "day": "일",
@@ -514,18 +612,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/197982279"
   },
   {
+    "id": 3138,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-07",
-    "title": "철권",
-    "body": "14",
+    "day": "일",
     "time": "18:30",
-    "url": "https://www.sooplive.com/station/heda221112/post/198000819",
+    "title": "철권",
+    "note": "",
     "source": "soop",
-    "day": "일"
+    "url": "https://www.sooplive.com/station/heda221112/post/198000819"
   },
   {
-    "id": 708,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3139,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-07",
     "day": "일",
@@ -536,8 +636,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/198061581"
   },
   {
-    "id": 709,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3140,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-07",
     "day": "일",
@@ -548,8 +648,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198065425"
   },
   {
-    "id": 710,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3141,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-07",
     "day": "일",
@@ -560,8 +660,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198051901"
   },
   {
-    "id": 711,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3142,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-07",
     "day": "일",
@@ -572,8 +672,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/197984803"
   },
   {
-    "id": 712,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3143,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-07",
     "day": "일",
@@ -584,8 +684,8 @@
     "url": ""
   },
   {
-    "id": 713,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3144,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-08",
     "day": "월",
@@ -596,8 +696,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198152051"
   },
   {
-    "id": 714,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3145,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-08",
     "day": "월",
@@ -608,8 +708,8 @@
     "url": "https://www.sooplive.com/station/hibby1004/post/198072655"
   },
   {
-    "id": 715,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3146,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-08",
     "day": "월",
@@ -620,8 +720,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/198132189"
   },
   {
-    "id": 716,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3147,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-08",
     "day": "월",
@@ -632,8 +732,8 @@
     "url": ""
   },
   {
-    "id": 717,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3148,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-09",
     "day": "화",
@@ -644,8 +744,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198241719"
   },
   {
-    "id": 718,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3149,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-09",
     "day": "화",
@@ -656,18 +756,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/198184493"
   },
   {
+    "id": 3150,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-09",
-    "title": "뚱딴지 점호",
-    "body": "28",
+    "day": "화",
     "time": "14:00",
-    "url": "https://www.sooplive.com/station/heda221112/post/198239413",
+    "title": "뚱딴지 점호",
+    "note": "",
     "source": "soop",
-    "day": "화"
+    "url": "https://www.sooplive.com/station/heda221112/post/198239413"
   },
   {
-    "id": 719,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3151,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-09",
     "day": "화",
@@ -678,8 +780,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/198242803"
   },
   {
-    "id": 720,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3152,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-09",
     "day": "화",
@@ -690,8 +792,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198161701"
   },
   {
-    "id": 721,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3153,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-09",
     "day": "화",
@@ -702,8 +804,8 @@
     "url": "https://www.sooplive.com/station/hibby1004/post/198203989"
   },
   {
-    "id": 722,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3154,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-09",
     "day": "화",
@@ -714,8 +816,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198241541"
   },
   {
-    "id": 723,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3155,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-09",
     "day": "화",
@@ -726,8 +828,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/198240679"
   },
   {
-    "id": 724,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3156,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-09",
     "day": "화",
@@ -738,8 +840,8 @@
     "url": ""
   },
   {
-    "id": 725,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3157,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-10",
     "day": "수",
@@ -750,8 +852,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198272873"
   },
   {
-    "id": 726,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3158,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-10",
     "day": "수",
@@ -762,8 +864,8 @@
     "url": "https://www.sooplive.com/station/et0726/post/198255659"
   },
   {
-    "id": 727,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3159,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-10",
     "day": "수",
@@ -774,8 +876,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198313881"
   },
   {
-    "id": 728,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3160,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-10",
     "day": "수",
@@ -786,8 +888,8 @@
     "url": "https://www.sooplive.com/station/hibby1004/post/198275183"
   },
   {
-    "id": 729,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3161,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-10",
     "day": "수",
@@ -798,8 +900,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198282377"
   },
   {
-    "id": 730,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3162,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-10",
     "day": "수",
@@ -810,8 +912,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/198256521"
   },
   {
-    "id": 731,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3163,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-10",
     "day": "수",
@@ -822,8 +924,8 @@
     "url": ""
   },
   {
-    "id": 732,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3164,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-11",
     "day": "목",
@@ -834,8 +936,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198387809"
   },
   {
-    "id": 733,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3165,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-11",
     "day": "목",
@@ -846,18 +948,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/198429117"
   },
   {
+    "id": 3166,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-11",
-    "title": "소통",
-    "body": "26",
+    "day": "목",
     "time": "18:30",
-    "url": "https://www.sooplive.com/station/heda221112/post/198366297",
+    "title": "소통",
+    "note": "",
     "source": "soop",
-    "day": "목"
+    "url": "https://www.sooplive.com/station/heda221112/post/198366297"
   },
   {
-    "id": 734,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3167,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-11",
     "day": "목",
@@ -868,8 +972,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/198385819"
   },
   {
-    "id": 735,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3168,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-11",
     "day": "목",
@@ -880,8 +984,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198345651"
   },
   {
-    "id": 736,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3169,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-11",
     "day": "목",
@@ -892,8 +996,8 @@
     "url": "https://www.sooplive.com/station/hibby1004/post/198434169"
   },
   {
-    "id": 737,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3170,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-11",
     "day": "목",
@@ -904,8 +1008,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198417871"
   },
   {
-    "id": 738,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3171,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-11",
     "day": "목",
@@ -916,8 +1020,8 @@
     "url": ""
   },
   {
-    "id": 739,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3172,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-12",
     "day": "금",
@@ -928,8 +1032,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198487431"
   },
   {
-    "id": 740,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3173,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-12",
     "day": "금",
@@ -940,8 +1044,8 @@
     "url": "https://www.sooplive.com/station/et0726/post/198518375"
   },
   {
-    "id": 741,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3174,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-12",
     "day": "금",
@@ -952,8 +1056,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198441193"
   },
   {
-    "id": 742,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3175,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-12",
     "day": "금",
@@ -964,8 +1068,8 @@
     "url": "https://www.sooplive.com/station/hibby1004/post/198459123"
   },
   {
-    "id": 743,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3176,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-12",
     "day": "금",
@@ -976,8 +1080,8 @@
     "url": ""
   },
   {
-    "id": 744,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3177,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-13",
     "day": "토",
@@ -988,8 +1092,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198606371"
   },
   {
-    "id": 745,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3178,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-13",
     "day": "토",
@@ -1000,18 +1104,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/198557589"
   },
   {
+    "id": 3179,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-13",
-    "title": "어제 친구랑 뽀송이 병원 갔다가 저녁까지 야무지게 먹고 돌아옴 ...",
-    "body": "32",
+    "day": "토",
     "time": "미정",
-    "url": "https://www.sooplive.com/station/heda221112/post/198530141",
+    "title": "어제 친구랑 뽀송이 병원 갔다가 저녁까지 야무지게 먹고 돌아옴 ...",
+    "note": "",
     "source": "soop",
-    "day": "토"
+    "url": "https://www.sooplive.com/station/heda221112/post/198530141"
   },
   {
-    "id": 746,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3180,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-13",
     "day": "토",
@@ -1022,8 +1128,8 @@
     "url": ""
   },
   {
-    "id": 747,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3181,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-13",
     "day": "토",
@@ -1034,8 +1140,8 @@
     "url": "https://www.sooplive.com/station/maribyeol/post/198614017"
   },
   {
-    "id": 748,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3182,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-13",
     "day": "토",
@@ -1046,8 +1152,8 @@
     "url": ""
   },
   {
-    "id": 749,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3183,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-13",
     "day": "토",
@@ -1058,8 +1164,8 @@
     "url": ""
   },
   {
-    "id": 750,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3184,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-13",
     "day": "토",
@@ -1070,8 +1176,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198549749"
   },
   {
-    "id": 751,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3185,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-13",
     "day": "토",
@@ -1082,8 +1188,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/198573743"
   },
   {
-    "id": 752,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3186,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-13",
     "day": "토",
@@ -1094,8 +1200,8 @@
     "url": ""
   },
   {
-    "id": 753,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3187,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-14",
     "day": "일",
@@ -1106,8 +1212,8 @@
     "url": ""
   },
   {
-    "id": 754,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3188,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-14",
     "day": "일",
@@ -1118,8 +1224,8 @@
     "url": "https://www.sooplive.com/station/et0726/post/198655419"
   },
   {
-    "id": 755,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3189,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-14",
     "day": "일",
@@ -1130,8 +1236,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/198661491"
   },
   {
-    "id": 756,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3190,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-14",
     "day": "일",
@@ -1142,8 +1248,8 @@
     "url": ""
   },
   {
-    "id": 757,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3191,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-14",
     "day": "일",
@@ -1154,8 +1260,8 @@
     "url": ""
   },
   {
-    "id": 758,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3192,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-14",
     "day": "일",
@@ -1166,8 +1272,8 @@
     "url": "https://www.sooplive.com/station/nslah830/post/198688411"
   },
   {
-    "id": 759,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3193,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-14",
     "day": "일",
@@ -1178,8 +1284,8 @@
     "url": ""
   },
   {
-    "id": 760,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3194,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-15",
     "day": "월",
@@ -1190,8 +1296,8 @@
     "url": "https://www.sooplive.com/station/gjstn7637/post/198801905"
   },
   {
-    "id": 761,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3195,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-15",
     "day": "월",
@@ -1202,17 +1308,20 @@
     "url": "https://www.sooplive.com/station/et0726/post/198742329"
   },
   {
+    "id": 3196,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-15",
     "day": "월",
     "time": "미정",
     "title": "💙 헤다 복귀 6PM",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
-    "id": 762,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3197,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-15",
     "day": "월",
@@ -1223,8 +1332,8 @@
     "url": "https://www.sooplive.com/station/donggeul2/post/198733251"
   },
   {
-    "id": 763,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3198,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-15",
     "day": "월",
@@ -1235,8 +1344,8 @@
     "url": ""
   },
   {
-    "id": 764,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3199,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-15",
     "day": "월",
@@ -1247,8 +1356,8 @@
     "url": ""
   },
   {
-    "id": 765,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3200,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-15",
     "day": "월",
@@ -1259,8 +1368,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198738995"
   },
   {
-    "id": 766,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3201,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-15",
     "day": "월",
@@ -1271,8 +1380,8 @@
     "url": ""
   },
   {
-    "id": 767,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3202,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-16",
     "day": "화",
@@ -1283,17 +1392,32 @@
     "url": ""
   },
   {
+    "id": 3203,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
+    "member": "ggommori",
+    "date": "2026-06-16",
+    "day": "화",
+    "time": "18:30",
+    "title": "미정",
+    "note": "수동 수정",
+    "source": "manual",
+    "url": ""
+  },
+  {
+    "id": 3204,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "heda",
     "date": "2026-06-16",
     "day": "화",
     "time": "미정",
     "title": "💙 헤다 보이스 같이보기",
     "note": "구글 시트 일정표 기준",
-    "source": "google_sheet"
+    "source": "google_sheet",
+    "url": ""
   },
   {
-    "id": 768,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3205,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-16",
     "day": "화",
@@ -1304,8 +1428,8 @@
     "url": ""
   },
   {
-    "id": 769,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3206,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-16",
     "day": "화",
@@ -1316,8 +1440,8 @@
     "url": ""
   },
   {
-    "id": 770,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3207,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-16",
     "day": "화",
@@ -1328,8 +1452,8 @@
     "url": "https://www.sooplive.com/station/niniming/post/198829543"
   },
   {
-    "id": 771,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3208,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-16",
     "day": "화",
@@ -1340,8 +1464,8 @@
     "url": ""
   },
   {
-    "id": 772,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3209,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-17",
     "day": "수",
@@ -1361,8 +1485,17 @@
     "source": "google_sheet"
   },
   {
-    "id": 773,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "member": "heda",
+    "date": "2026-06-17",
+    "day": "수",
+    "time": "미정",
+    "title": "(예정) 로스타시티 듀엣 노래자랑 (낮방)",
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
+  },
+  {
+    "id": 3211,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-17",
     "day": "수",
@@ -1373,8 +1506,8 @@
     "url": ""
   },
   {
-    "id": 774,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3212,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-17",
     "day": "수",
@@ -1385,8 +1518,8 @@
     "url": ""
   },
   {
-    "id": 775,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3213,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-17",
     "day": "수",
@@ -1397,8 +1530,8 @@
     "url": ""
   },
   {
-    "id": 776,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3214,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-17",
     "day": "수",
@@ -1409,8 +1542,8 @@
     "url": ""
   },
   {
-    "id": 777,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3215,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-18",
     "day": "목",
@@ -1421,8 +1554,8 @@
     "url": ""
   },
   {
-    "id": 778,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3216,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-18",
     "day": "목",
@@ -1433,8 +1566,8 @@
     "url": ""
   },
   {
-    "id": 779,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3217,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-18",
     "day": "목",
@@ -1454,8 +1587,8 @@
     "source": "google_sheet"
   },
   {
-    "id": 780,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3219,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-18",
     "day": "목",
@@ -1466,8 +1599,8 @@
     "url": ""
   },
   {
-    "id": 781,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3220,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-18",
     "day": "목",
@@ -1478,8 +1611,8 @@
     "url": ""
   },
   {
-    "id": 782,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3221,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-18",
     "day": "목",
@@ -1490,8 +1623,8 @@
     "url": ""
   },
   {
-    "id": 783,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3222,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-18",
     "day": "목",
@@ -1502,8 +1635,8 @@
     "url": ""
   },
   {
-    "id": 784,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3223,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-18",
     "day": "목",
@@ -1514,8 +1647,8 @@
     "url": ""
   },
   {
-    "id": 785,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3224,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-18",
     "day": "목",
@@ -1526,8 +1659,8 @@
     "url": ""
   },
   {
-    "id": 786,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3225,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-18",
     "day": "목",
@@ -1538,8 +1671,8 @@
     "url": ""
   },
   {
-    "id": 787,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3226,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-18",
     "day": "목",
@@ -1550,8 +1683,8 @@
     "url": ""
   },
   {
-    "id": 788,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3227,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-19",
     "day": "금",
@@ -1562,8 +1695,8 @@
     "url": ""
   },
   {
-    "id": 789,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3228,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-19",
     "day": "금",
@@ -1574,8 +1707,8 @@
     "url": ""
   },
   {
-    "id": 790,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3229,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-19",
     "day": "금",
@@ -1586,8 +1719,8 @@
     "url": ""
   },
   {
-    "id": 791,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3230,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-20",
     "day": "토",
@@ -1598,8 +1731,8 @@
     "url": ""
   },
   {
-    "id": 792,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3231,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-20",
     "day": "토",
@@ -1610,8 +1743,8 @@
     "url": ""
   },
   {
-    "id": 793,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3232,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-21",
     "day": "일",
@@ -1622,8 +1755,8 @@
     "url": ""
   },
   {
-    "id": 794,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3233,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-21",
     "day": "일",
@@ -1634,8 +1767,8 @@
     "url": ""
   },
   {
-    "id": 795,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3234,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
@@ -1646,8 +1779,8 @@
     "url": ""
   },
   {
-    "id": 796,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3235,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-22",
     "day": "월",
@@ -1658,8 +1791,8 @@
     "url": ""
   },
   {
-    "id": 797,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3236,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-22",
     "day": "월",
@@ -1670,8 +1803,8 @@
     "url": ""
   },
   {
-    "id": 798,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3237,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-22",
     "day": "월",
@@ -1682,8 +1815,8 @@
     "url": ""
   },
   {
-    "id": 799,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3238,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-22",
     "day": "월",
@@ -1694,8 +1827,8 @@
     "url": ""
   },
   {
-    "id": 800,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3239,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-23",
     "day": "화",
@@ -1706,8 +1839,8 @@
     "url": ""
   },
   {
-    "id": 801,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3240,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-23",
     "day": "화",
@@ -1718,8 +1851,8 @@
     "url": ""
   },
   {
-    "id": 802,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3241,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-24",
     "day": "수",
@@ -1730,8 +1863,8 @@
     "url": ""
   },
   {
-    "id": 803,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3242,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-24",
     "day": "수",
@@ -1751,8 +1884,8 @@
     "source": "google_sheet"
   },
   {
-    "id": 804,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3244,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-24",
     "day": "수",
@@ -1763,8 +1896,8 @@
     "url": ""
   },
   {
-    "id": 805,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3245,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-24",
     "day": "수",
@@ -1775,8 +1908,8 @@
     "url": ""
   },
   {
-    "id": 806,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3246,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-24",
     "day": "수",
@@ -1787,8 +1920,8 @@
     "url": ""
   },
   {
-    "id": 807,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3247,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-24",
     "day": "수",
@@ -1799,8 +1932,8 @@
     "url": ""
   },
   {
-    "id": 808,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3248,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-24",
     "day": "수",
@@ -1811,8 +1944,8 @@
     "url": ""
   },
   {
-    "id": 809,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3249,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-24",
     "day": "수",
@@ -1823,8 +1956,8 @@
     "url": ""
   },
   {
-    "id": 810,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3250,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-24",
     "day": "수",
@@ -1835,8 +1968,8 @@
     "url": ""
   },
   {
-    "id": 811,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3251,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-25",
     "day": "목",
@@ -1847,8 +1980,8 @@
     "url": ""
   },
   {
-    "id": 812,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3252,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-25",
     "day": "목",
@@ -1859,8 +1992,8 @@
     "url": ""
   },
   {
-    "id": 813,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3253,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-26",
     "day": "금",
@@ -1871,8 +2004,8 @@
     "url": ""
   },
   {
-    "id": 814,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3254,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-26",
     "day": "금",
@@ -1892,8 +2025,8 @@
     "source": "google_sheet"
   },
   {
-    "id": 815,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3256,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-26",
     "day": "금",
@@ -1904,8 +2037,8 @@
     "url": ""
   },
   {
-    "id": 816,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3257,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-26",
     "day": "금",
@@ -1916,8 +2049,8 @@
     "url": ""
   },
   {
-    "id": 817,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3258,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-26",
     "day": "금",
@@ -1928,8 +2061,8 @@
     "url": ""
   },
   {
-    "id": 818,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3259,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-26",
     "day": "금",
@@ -1940,8 +2073,8 @@
     "url": ""
   },
   {
-    "id": 819,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3260,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-26",
     "day": "금",
@@ -1952,8 +2085,8 @@
     "url": ""
   },
   {
-    "id": 820,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3261,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-26",
     "day": "금",
@@ -1964,8 +2097,8 @@
     "url": ""
   },
   {
-    "id": 821,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3262,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-26",
     "day": "금",
@@ -1976,8 +2109,8 @@
     "url": ""
   },
   {
-    "id": 822,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3263,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-27",
     "day": "토",
@@ -1988,8 +2121,8 @@
     "url": ""
   },
   {
-    "id": 823,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3264,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-28",
     "day": "일",
@@ -2000,8 +2133,8 @@
     "url": ""
   },
   {
-    "id": 824,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3265,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-28",
     "day": "일",
@@ -2012,8 +2145,8 @@
     "url": ""
   },
   {
-    "id": 825,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3266,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-29",
     "day": "월",
@@ -2024,8 +2157,8 @@
     "url": ""
   },
   {
-    "id": 826,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3267,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "adeung",
     "date": "2026-06-29",
     "day": "월",
@@ -2036,8 +2169,8 @@
     "url": ""
   },
   {
-    "id": 827,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3268,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-29",
     "day": "월",
@@ -2048,8 +2181,8 @@
     "url": ""
   },
   {
-    "id": 828,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3269,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-29",
     "day": "월",
@@ -2069,8 +2202,8 @@
     "source": "google_sheet"
   },
   {
-    "id": 829,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3271,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "homiming",
     "date": "2026-06-29",
     "day": "월",
@@ -2081,8 +2214,8 @@
     "url": ""
   },
   {
-    "id": 830,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3272,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "maribyeol",
     "date": "2026-06-29",
     "day": "월",
@@ -2093,8 +2226,8 @@
     "url": ""
   },
   {
-    "id": 831,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3273,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "neboring",
     "date": "2026-06-29",
     "day": "월",
@@ -2105,8 +2238,8 @@
     "url": ""
   },
   {
-    "id": 832,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3274,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "niniming",
     "date": "2026-06-29",
     "day": "월",
@@ -2117,8 +2250,8 @@
     "url": ""
   },
   {
-    "id": 833,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3275,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "peach",
     "date": "2026-06-29",
     "day": "월",
@@ -2129,8 +2262,8 @@
     "url": ""
   },
   {
-    "id": 834,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3276,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-29",
     "day": "월",
@@ -2141,8 +2274,8 @@
     "url": ""
   },
   {
-    "id": 835,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3277,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-29",
     "day": "월",
@@ -2153,8 +2286,8 @@
     "url": ""
   },
   {
-    "id": 836,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3278,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "ggommori",
     "date": "2026-06-30",
     "day": "화",
@@ -2165,8 +2298,8 @@
     "url": ""
   },
   {
-    "id": 837,
-    "created_at": "2026-06-17T01:08:33.894187+00:00",
+    "id": 3279,
+    "created_at": "2026-06-17T01:29:58.07653+00:00",
     "member": "yuki",
     "date": "2026-06-30",
     "day": "화",
