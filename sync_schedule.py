@@ -3,6 +3,7 @@ import re
 import csv
 import json
 import urllib.request
+import urllib.error
 import io
 import sys
 from datetime import datetime, timedelta
@@ -954,8 +955,8 @@ def merge_member_sources(sheet_scheds, cafe_scheds, soop_scheds, member_key):
 
 # ── Cumulative save ────────────────────────────────────────────────────────────
 # ── Supabase Integration ──────────────────────────────────────────────────────
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY")
+SUPABASE_URL = (os.environ.get("SUPABASE_URL") or "").strip() or None
+SUPABASE_ANON_KEY = (os.environ.get("SUPABASE_ANON_KEY") or "").strip() or None
 
 def fetch_supabase_schedules():
     if not SUPABASE_URL or not SUPABASE_ANON_KEY:
@@ -971,6 +972,11 @@ def fetch_supabase_schedules():
     try:
         with urllib.request.urlopen(req, timeout=10) as r:
             return json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as he:
+        err_body = he.read().decode("utf-8")
+        print(f"  [Supabase] Fetch failed with status {he.code}: {he.reason}")
+        print(f"  [Supabase] Error details: {err_body}")
+        return None
     except Exception as e:
         print(f"  [Supabase] Fetch failed: {e}")
         return None
@@ -992,6 +998,11 @@ def save_supabase_schedules(schedules):
     try:
         with urllib.request.urlopen(delete_req, timeout=10) as r:
             pass
+    except urllib.error.HTTPError as he:
+        err_body = he.read().decode("utf-8")
+        print(f"  [Supabase] Clear table failed with status {he.code}: {he.reason}")
+        print(f"  [Supabase] Error details: {err_body}")
+        return False
     except Exception as e:
         print(f"  [Supabase] Clear table failed: {e}")
         return False
@@ -1025,6 +1036,11 @@ def save_supabase_schedules(schedules):
         with urllib.request.urlopen(insert_req, timeout=10) as r:
             pass
         return True
+    except urllib.error.HTTPError as he:
+        err_body = he.read().decode("utf-8")
+        print(f"  [Supabase] Insert failed with status {he.code}: {he.reason}")
+        print(f"  [Supabase] Error details: {err_body}")
+        return False
     except Exception as e:
         print(f"  [Supabase] Insert failed: {e}")
         return False
