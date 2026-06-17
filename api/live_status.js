@@ -71,7 +71,7 @@ module.exports = async function handler(req, res) {
             broad_title: "방송 준비 중",
             broad_no: "",
             thumbnail: profileImg,
-            url: `https://ch.sooplive.com/${soopId}`
+            url: `https://www.sooplive.com/station/${soopId}`
           });
         }
         return resObj;
@@ -85,7 +85,7 @@ module.exports = async function handler(req, res) {
           broad_title: "오프라인 (오류)",
           broad_no: "",
           thumbnail: "",
-          url: `https://ch.sooplive.com/${soopId}`,
+          url: `https://www.sooplive.com/station/${soopId}`,
           error: err.message
         };
       }

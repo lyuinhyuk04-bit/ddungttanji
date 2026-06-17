@@ -86,7 +86,7 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
                                     "broad_title": "방송 준비 중",
                                     "broad_no": "",
                                     "thumbnail": profile_img,
-                                    "url": f"https://ch.sooplive.com/{soop_id}"
+                                    "url": f"https://www.sooplive.com/station/{soop_id}"
                                 })
                             return res
                     except Exception as e:
@@ -99,7 +99,7 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
                             "broad_title": "오프라인 (오류)",
                             "broad_no": "",
                             "thumbnail": "",
-                            "url": f"https://ch.sooplive.com/{soop_id}",
+                            "url": f"https://www.sooplive.com/station/{soop_id}",
                             "error": str(e)
                         }
 
