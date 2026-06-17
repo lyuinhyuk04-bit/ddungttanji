@@ -1359,9 +1359,8 @@
     "day": "수",
     "time": "07:00",
     "title": "시네티 이웃사람 시청 + 카페보기 / 트할님 아레나",
-    "note": "구글 시트 일정표 기준 / SOOP 공지로 보완됨",
-    "source": "google_sheet",
-    "url": "https://www.sooplive.com/station/amaiyk0105/post/198823231"
+    "note": "구글 시트 일정표 기준",
+    "source": "google_sheet"
   },
   {
     "member": "adeung",
@@ -1674,7 +1673,7 @@
     "date": "2026-06-24",
     "day": "수",
     "time": "미정",
-    "title": "뚱딴지 종겜데이",
+    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -1683,7 +1682,7 @@
     "date": "2026-06-24",
     "day": "수",
     "time": "미정",
-    "title": "[크루] 🐝뚱딴지 종겜데이(1)",
+    "title": "뚱딴지 종겜데이",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -1917,7 +1916,7 @@
     "date": "2026-06-29",
     "day": "월",
     "time": "미정",
-    "title": "미정",
+    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
@@ -1926,7 +1925,7 @@
     "date": "2026-06-29",
     "day": "월",
     "time": "미정",
-    "title": "[크루] 🐝뚱딴지 종겜데이(2)",
+    "title": "미정",
     "note": "구글 시트 일정표 기준",
     "source": "google_sheet"
   },
