@@ -11,6 +11,8 @@ let activeMember    = null;        // 현재 선택된 멤버 key
 let currentWeekStart = null;       // Date: 보고 있는 주의 월요일
 let isAdminMode     = false;       // 관리자 모드 활성화 여부
 let isDirty         = false;       // 수정사항 저장 여부
+let isLoaded        = false;       // 데이터 로드 완료 여부
+
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const sidebar              = document.getElementById('sidebar');
@@ -75,26 +77,22 @@ document.addEventListener('DOMContentLoaded', () => {
       appConfig = data.config;
       rawSchedules = data.schedules;
       activeMember = appConfig.defaultMember;
+      isLoaded = true;
 
       renderCrewLinks();
-      renderMembersList();
-      renderActiveMemberProfile();
-      setWeekStartToDate(new Date());
-      renderWeeklySchedule();
+      selectMember(activeMember);
       fetchLiveStatus();
     })
     .catch(err => {
       console.warn('API fetch failed, trying local fallback window data:', err);
+      isLoaded = true;
       if (window.APP_CONFIG && window.APP_SCHEDULE) {
         appConfig = window.APP_CONFIG;
         rawSchedules = window.APP_SCHEDULE;
         activeMember = appConfig.defaultMember;
 
         renderCrewLinks();
-        renderMembersList();
-        renderActiveMemberProfile();
-        setWeekStartToDate(new Date());
-        renderWeeklySchedule();
+        selectMember(activeMember);
         fetchLiveStatus();
       } else {
         weeklyGridContainer.innerHTML = `
@@ -312,6 +310,36 @@ function selectMember(key) {
   activeMember = key;
   renderMembersList();
   renderActiveMemberProfile();
+  
+  // Auto-navigate to the latest schedule's week if current week is empty for this member
+  const memberScheds = rawSchedules.filter(s => s.member === key);
+  if (memberScheds.length > 0) {
+    const today = new Date();
+    const curWeekD = new Date(today);
+    const curWeekDay = curWeekD.getDay();
+    const curWeekDiff = curWeekD.getDate() - curWeekDay + (curWeekDay === 0 ? -6 : 1);
+    const curWeekStart = new Date(curWeekD.setDate(curWeekDiff));
+    curWeekStart.setHours(0,0,0,0);
+    
+    const curWeekEnd = new Date(curWeekStart);
+    curWeekEnd.setDate(curWeekStart.getDate() + 6);
+    curWeekEnd.setHours(23,59,59,999);
+    
+    const hasCurrentWeekSched = memberScheds.some(s => {
+      const sDate = new Date(s.date);
+      return sDate >= curWeekStart && sDate <= curWeekEnd;
+    });
+    
+    if (!hasCurrentWeekSched) {
+      const sorted = [...memberScheds].sort((a, b) => b.date.localeCompare(a.date));
+      setWeekStartToDate(new Date(sorted[0].date));
+    } else {
+      setWeekStartToDate(today);
+    }
+  } else {
+    setWeekStartToDate(new Date());
+  }
+
   renderWeeklySchedule();
   sidebar.classList.remove('open');
   sidebarOverlay.classList.remove('active');
@@ -376,13 +404,16 @@ function renderWeeklySchedule() {
         return a.time.localeCompare(b.time);
       });
 
-    let schedulesHtml = `
-      <div class="empty-day">
-        <i class="fa-regular fa-calendar-xmark"></i>
-        <p>방송 일정 없음</p>
-      </div>`;
+    let schedulesHtml = '';
+    const isRest = dayScheds.some(s => s.title === '휴방');
 
-    if (dayScheds.length > 0) {
+    if (isRest) {
+      schedulesHtml = `
+        <div class="empty-day rest-day">
+          <i class="fa-solid fa-moon" style="color:var(--accent-pink);font-size:22px;margin-bottom:6px;"></i>
+          <p style="color:var(--accent-pink);font-weight:600;">휴방</p>
+        </div>`;
+    } else if (dayScheds.length > 0) {
       schedulesHtml = dayScheds.map(s => {
         const isCrew       = s.title.startsWith('[크루]');
         const rawTitle     = isCrew ? s.title.replace('[크루]','').trim() : s.title;
@@ -415,6 +446,20 @@ function renderWeeklySchedule() {
             ${adminActionsHtml}
           </div>`;
       }).join('');
+    } else {
+      if (!isLoaded) {
+        schedulesHtml = `
+          <div class="empty-day loading-day">
+            <i class="fa-solid fa-spinner fa-spin" style="color:var(--accent-blue);font-size:22px;margin-bottom:6px;"></i>
+            <p style="color:var(--color-text-muted);">일정 확인 중</p>
+          </div>`;
+      } else {
+        schedulesHtml = `
+          <div class="empty-day tbd-day">
+            <i class="fa-regular fa-calendar" style="color:var(--color-text-muted);font-size:22px;margin-bottom:6px;"></i>
+            <p style="color:var(--color-text-muted);">일정 미정</p>
+          </div>`;
+      }
     }
 
     const headerHtml = isAdminMode
