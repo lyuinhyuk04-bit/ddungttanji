@@ -179,10 +179,11 @@ function setupEventListeners() {
   if (liveRefreshBtn) {
     liveRefreshBtn.addEventListener('click', fetchLiveStatus);
   }
+
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function formatDisplayTime(timeStr) {
+function formatDisplayTime(timeStr, memberKey) {
   if (!timeStr || timeStr === '미정') {
     return `<span style="color:var(--color-text-muted)">시간 미정</span>`;
   }
@@ -229,8 +230,10 @@ function formatDisplayTime(timeStr) {
     const m = siMatch[2] ? parseInt(siMatch[2], 10) : 0;
     
     let ampm = '오후';
+    const isMorningMember = memberKey && ['yuki', 'maribyeol', 'neboring'].includes(memberKey);
+    
     if (h < 12) {
-      ampm = '오후'; // standard streams default to PM
+      ampm = isMorningMember ? '오전' : '오후'; // yuki, maribyeol, neboring default to AM, others default to PM
     } else if (h === 12) {
       ampm = '오후';
     } else {
@@ -418,7 +421,7 @@ function renderWeeklySchedule() {
         const isCrew       = s.title.startsWith('[크루]');
         const rawTitle     = isCrew ? s.title.replace('[크루]','').trim() : s.title;
         const displayTitle = rawTitle.replace(/\.\.\.$/,'').trim();
-        const timeDisplay = formatDisplayTime(s.time);
+        const timeDisplay = formatDisplayTime(s.time, s.member);
 
         const sourceLinkHtml = s.url
           ? `<a href="${s.url}" target="_blank" class="schedule-source"><i class="fa-solid fa-link"></i> 본문 링크</a>`
@@ -536,8 +539,8 @@ function performSearch(query) {
           <div class="search-result-info">
             <div class="search-result-meta">
               <span class="search-result-day-name">${s.day}요일</span>
-              <span class="search-result-time">
-                <i class="fa-regular fa-clock"></i> ${formatDisplayTime(s.time)}
+               <span class="search-result-time">
+                <i class="fa-regular fa-clock"></i> ${formatDisplayTime(s.time, s.member)}
               </span>
             </div>
             <div class="search-result-title">
@@ -857,3 +860,5 @@ function renderLiveStatus(results) {
     `;
   }).join('');
 }
+
+

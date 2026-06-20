@@ -19,18 +19,30 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         try:
-            if self.path == '/api/live_status':
-                config_path = "config.json"
-                if not os.path.exists(config_path):
-                    self.send_response(404)
-                    self.end_headers()
-                    self.wfile.write(b"config.json not found")
-                    return
+
+            if self.path.startswith('/api/live_status'):
+                import urllib.parse
+                parsed_url = urllib.parse.urlparse(self.path)
+                query_params = urllib.parse.parse_qs(parsed_url.query)
                 
-                with open(config_path, "r", encoding="utf-8") as f:
-                    config = json.load(f)
-                
-                members = config.get("members", {})
+                custom_ids = query_params.get("ids", [])
+                members = {}
+                if custom_ids:
+                    id_list = [i.strip() for val in custom_ids for i in val.split(",") if i.strip()]
+                    for i in id_list:
+                        members[i] = {"soopId": i, "name": i}
+                else:
+                    config_path = "config.json"
+                    if not os.path.exists(config_path):
+                        self.send_response(404)
+                        self.end_headers()
+                        self.wfile.write(b"config.json not found")
+                        return
+                    
+                    with open(config_path, "r", encoding="utf-8") as f:
+                        config = json.load(f)
+                    
+                    members = config.get("members", {})
                 
                 ctx = ssl.create_default_context()
                 ctx.check_hostname = False

@@ -1744,3 +1744,4 @@ input:checked + .slider:before {
 .refresh-btn i.spin {
   animation: spin 1s linear infinite;
 }
+
