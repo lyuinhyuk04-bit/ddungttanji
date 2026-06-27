@@ -13,6 +13,9 @@ let isAdminMode     = false;       // 관리자 모드 활성화 여부
 let isDirty         = false;       // 수정사항 저장 여부
 let isLoaded        = false;       // 데이터 로드 완료 여부
 
+let rawEvents       = [];          // 전체 이벤트 배열
+let currentEventImageBase64 = '';  // 현재 작업 중인 이벤트의 Base64 이미지
+
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const sidebar              = document.getElementById('sidebar');
@@ -82,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderCrewLinks();
       selectMember(activeMember);
       fetchLiveStatus();
+      handleRouting();
     })
     .catch(err => {
       console.warn('API fetch failed, trying local fallback window data:', err);
@@ -94,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCrewLinks();
         selectMember(activeMember);
         fetchLiveStatus();
+        handleRouting();
       } else {
         weeklyGridContainer.innerHTML = `
           <div class="loading-container" style="grid-column:span 7">
@@ -156,6 +161,7 @@ function setupEventListeners() {
         document.body.classList.remove('admin-mode-active');
       }
       renderWeeklySchedule();
+      renderEvents();
     });
   }
 
@@ -178,6 +184,121 @@ function setupEventListeners() {
   }
   if (liveRefreshBtn) {
     liveRefreshBtn.addEventListener('click', fetchLiveStatus);
+  }
+
+  // Sidebar navigation
+  const btnGoHome = document.getElementById('btnGoHome');
+  const btnGoEvents = document.getElementById('btnGoEvents');
+  
+  if (btnGoHome) {
+    btnGoHome.addEventListener('click', () => {
+      if (window.location.protocol === 'file:') {
+        window.location.hash = '#';
+      } else {
+        window.history.pushState({}, '', '/');
+      }
+      handleRouting();
+    });
+  }
+  if (btnGoEvents) {
+    btnGoEvents.addEventListener('click', () => {
+      if (window.location.protocol === 'file:') {
+        window.location.hash = '#events';
+      } else {
+        window.history.pushState({}, '', '/events');
+      }
+      handleRouting();
+    });
+  }
+  
+  window.addEventListener('popstate', handleRouting);
+  
+  // Event Add & Form
+  const addEventBtn = document.getElementById('addEventBtn');
+  if (addEventBtn) {
+    addEventBtn.addEventListener('click', () => {
+      window.openEventAddModal();
+    });
+  }
+  
+  const eventModal = document.getElementById('eventModal');
+  const eventModalCloseBtn = document.getElementById('eventModalCloseBtn');
+  const eventForm = document.getElementById('eventForm');
+  const deleteEventBtn = document.getElementById('deleteEventBtn');
+  const btnFetchOg = document.getElementById('btnFetchOg');
+  const eventImageFile = document.getElementById('eventImageFile');
+  const btnRemoveImage = document.getElementById('btnRemoveImage');
+  const eventImagePreview = document.getElementById('eventImagePreview');
+  const eventUploadPlaceholder = document.getElementById('eventUploadPlaceholder');
+  
+  if (eventModalCloseBtn) {
+    eventModalCloseBtn.addEventListener('click', () => {
+      if (eventModal) eventModal.classList.remove('active');
+    });
+  }
+  if (eventModal) {
+    eventModal.addEventListener('click', e => {
+      if (e.target === eventModal) eventModal.classList.remove('active');
+    });
+  }
+  if (eventForm) {
+    eventForm.addEventListener('submit', handleEventFormSubmit);
+  }
+  if (deleteEventBtn) {
+    deleteEventBtn.addEventListener('click', handleDeleteEventClick);
+  }
+  if (btnFetchOg) {
+    btnFetchOg.addEventListener('click', handleFetchOgClick);
+  }
+  
+  if (eventImageFile) {
+    eventImageFile.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        compressImage(file, base64Data => {
+          currentEventImageBase64 = base64Data;
+          if (eventImagePreview) {
+            eventImagePreview.src = base64Data;
+            eventImagePreview.classList.remove('hidden');
+          }
+          if (eventUploadPlaceholder) {
+            eventUploadPlaceholder.classList.add('hidden');
+          }
+          if (btnRemoveImage) {
+            btnRemoveImage.classList.remove('hidden');
+          }
+        });
+      }
+    });
+  }
+  
+  if (btnRemoveImage) {
+    btnRemoveImage.addEventListener('click', () => {
+      currentEventImageBase64 = '';
+      if (eventImageFile) eventImageFile.value = '';
+      if (eventImagePreview) {
+        eventImagePreview.src = '';
+        eventImagePreview.classList.add('hidden');
+      }
+      if (eventUploadPlaceholder) {
+        eventUploadPlaceholder.classList.remove('hidden');
+      }
+      btnRemoveImage.classList.add('hidden');
+    });
+  }
+  
+  // Event Detail Modal Close
+  const eventDetailModal = document.getElementById('eventDetailModal');
+  const eventDetailCloseBtn = document.getElementById('eventDetailCloseBtn');
+  if (eventDetailCloseBtn) {
+    eventDetailCloseBtn.addEventListener('click', () => {
+      if (eventDetailModal) eventDetailModal.classList.remove('active');
+    });
+  }
+  if (eventDetailModal) {
+    eventDetailModal.addEventListener('click', e => {
+      if (e.target === eventDetailModal) eventDetailModal.classList.remove('active');
+    });
   }
 
 }
@@ -839,26 +960,509 @@ function renderLiveStatus(results) {
     const thumbnailSrc = r.is_live ? r.thumbnail : (mConfig.avatar || 'logo.png');
 
     return `
-      <div class="${cardClass}" onclick="window.open('${r.url}', '_blank')">
-        <div class="live-card-header">
-          <div class="live-card-member">
-            ${avatarHtml}
-            <span class="live-card-name">${r.name}</span>
-          </div>
-          <span class="${statusClass}">${statusText}</span>
-        </div>
-        <div class="live-thumbnail-wrapper">
-          <img src="${thumbnailSrc}" alt="${r.name} 방송 미리보기" class="live-thumbnail-img" loading="lazy" onerror="this.src='logo.png'">
-          <div class="live-thumbnail-overlay">
-            <div class="live-title-text">${displayTitle}</div>
-          </div>
-          <div class="live-thumbnail-play">
-            <i class="fa-solid fa-play"></i>
-          </div>
-        </div>
-      </div>
-    `;
   }).join('');
+}
+
+
+// ── Events Section Controllers & SPA Router ────────────────────────────────────
+
+function handleRouting() {
+  const path = window.location.pathname;
+  const hash = window.location.hash;
+  const isEventsPath = path === '/events' || path === '/events/' || hash === '#events';
+  
+  const scheduleViewSection = document.getElementById('scheduleViewSection');
+  const liveStatusSection = document.getElementById('liveStatusSection');
+  const searchResultsSection = document.getElementById('searchResultsSection');
+  const eventsViewSection = document.getElementById('eventsViewSection');
+  const membersSection = document.getElementById('membersSection');
+  
+  const btnGoHome = document.getElementById('btnGoHome');
+  const btnGoEvents = document.getElementById('btnGoEvents');
+
+  if (isEventsPath) {
+    if (btnGoHome) btnGoHome.classList.remove('active');
+    if (btnGoEvents) btnGoEvents.classList.add('active');
+    
+    if (scheduleViewSection) scheduleViewSection.classList.add('hidden');
+    if (liveStatusSection) liveStatusSection.classList.add('hidden');
+    if (searchResultsSection) searchResultsSection.classList.add('hidden');
+    if (eventsViewSection) eventsViewSection.classList.remove('hidden');
+    if (membersSection) membersSection.classList.add('hidden');
+    
+    loadEvents();
+  } else {
+    if (btnGoHome) btnGoHome.classList.add('active');
+    if (btnGoEvents) btnGoEvents.classList.remove('active');
+    
+    if (scheduleViewSection) scheduleViewSection.classList.remove('hidden');
+    if (liveStatusSection) liveStatusSection.classList.remove('hidden');
+    if (searchResultsSection) searchResultsSection.classList.add('hidden');
+    if (eventsViewSection) eventsViewSection.classList.add('hidden');
+    if (membersSection) membersSection.classList.remove('hidden');
+    
+    renderWeeklySchedule();
+  }
+}
+
+let isEventsLoaded = false;
+function loadEvents() {
+  let apiEventsUrl = '/api/events';
+  if (window.location.protocol === 'file:') {
+    apiEventsUrl = 'http://localhost:8000/api/events';
+  }
+  
+  const eventsGrid = document.getElementById('eventsGrid');
+  if (eventsGrid) {
+    eventsGrid.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1; padding: 40px 0;">
+        <div class="loading-spinner"></div>
+        <p>이벤트 목록을 불러오는 중입니다...</p>
+      </div>`;
+  }
+  
+  fetch(apiEventsUrl)
+    .then(resp => {
+      if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
+      return resp.json();
+    })
+    .then(data => {
+      rawEvents = data;
+      isEventsLoaded = true;
+      renderEvents();
+    })
+    .catch(err => {
+      console.error('Failed to fetch events:', err);
+      rawEvents = [];
+      isEventsLoaded = true;
+      renderEvents();
+    });
+}
+
+function getEventStatus(startDateStr, endDateStr) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  
+  const start = new Date(startDateStr);
+  start.setHours(0,0,0,0);
+  
+  const end = new Date(endDateStr);
+  end.setHours(23,59,59,999);
+  
+  if (today < start) {
+    return 'upcoming';
+  } else if (today > end) {
+    return 'ended';
+  } else {
+    return 'ongoing';
+  }
+}
+
+function sortEvents(eventsList) {
+  return [...eventsList].sort((a, b) => {
+    const statusA = getEventStatus(a.start_date, a.end_date);
+    const statusB = getEventStatus(b.start_date, b.end_date);
+    
+    const priority = { ongoing: 1, upcoming: 2, ended: 3 };
+    if (priority[statusA] !== priority[statusB]) {
+      return priority[statusA] - priority[statusB];
+    }
+    
+    if (statusA === 'ongoing') {
+      return a.end_date.localeCompare(b.end_date);
+    } else if (statusA === 'upcoming') {
+      return a.start_date.localeCompare(b.start_date);
+    } else {
+      return b.end_date.localeCompare(a.end_date);
+    }
+  });
+}
+
+function renderEvents() {
+  const eventsGrid = document.getElementById('eventsGrid');
+  const addEventBtn = document.getElementById('addEventBtn');
+  if (!eventsGrid) return;
+  
+  if (addEventBtn) {
+    if (isAdminMode) {
+      addEventBtn.classList.remove('hidden');
+    } else {
+      addEventBtn.classList.add('hidden');
+    }
+  }
+  
+  if (rawEvents.length === 0) {
+    eventsGrid.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1; padding: 60px 0;">
+        <i class="fa-regular fa-star" style="font-size: 40px; color: var(--color-text-muted); margin-bottom: 12px;"></i>
+        <p style="color: var(--color-text-secondary); font-weight: 500;">등록된 이벤트가 없습니다.</p>
+        ${isAdminMode ? '<p style="font-size:12px; color:var(--color-text-muted); margin-top:8px;">우측 상단의 "새 이벤트 추가" 버튼을 눌러 첫 이벤트를 등록해 보세요!</p>' : ''}
+      </div>`;
+    return;
+  }
+  
+  const sorted = sortEvents(rawEvents);
+  
+  eventsGrid.innerHTML = sorted.map(e => {
+    const status = getEventStatus(e.start_date, e.end_date);
+    const statusLabels = { ongoing: '진행중', upcoming: '예정', ended: '종료' };
+    const dateRangeStr = `${e.start_date.replace(/-/g, '.')} ~ ${e.end_date.replace(/-/g, '.')}`;
+    
+    const imageHtml = e.image 
+      ? `<img src="${e.image}" alt="${e.title}" class="event-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+      : '';
+    const placeholderHtml = `
+      <div class="event-card-img-placeholder" style="${e.image ? 'display:none;' : ''}">
+        <i class="fa-regular fa-image"></i>
+        <span>포스터 없음</span>
+      </div>`;
+      
+    const linkBtnDisabled = e.link ? '' : 'disabled';
+    const detailBtnHtml = `<button class="event-card-btn btn-primary" onclick="window.openEventDetail(${rawEvents.indexOf(e)})">상세보기</button>`;
+    const linkBtnHtml = `<button class="event-card-btn btn-link" ${linkBtnDisabled} onclick="window.openEventLink('${e.link}')"><i class="fa-solid fa-up-right-from-square"></i> 바로가기</button>`;
+    
+    const adminActionsHtml = isAdminMode
+      ? `<button class="event-card-btn btn-edit-event" onclick="window.openEventEditModal(event, ${rawEvents.indexOf(e)})"><i class="fa-solid fa-pencil"></i> 수정</button>`
+      : '';
+      
+    return `
+      <div class="event-card">
+        <div class="event-card-img-wrap">
+          <div class="event-badge-container">
+            <span class="event-badge ${status}">${statusLabels[status]}</span>
+          </div>
+          ${imageHtml}
+          ${placeholderHtml}
+        </div>
+        <div class="event-card-body">
+          <h3 class="event-card-title">${e.title}</h3>
+          <div class="event-card-date">
+            <i class="fa-regular fa-calendar"></i>
+            <span>${dateRangeStr}</span>
+          </div>
+          <div class="event-card-desc">${e.description || '이벤트 설명이 없습니다.'}</div>
+          <div class="event-card-actions">
+            ${detailBtnHtml}
+            ${adminActionsHtml || linkBtnHtml}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+window.openEventDetail = function(index) {
+  const e = rawEvents[index];
+  const eventDetailModal = document.getElementById('eventDetailModal');
+  if (!e || !eventDetailModal) return;
+  
+  const status = getEventStatus(e.start_date, e.end_date);
+  const statusLabels = { ongoing: '진행중', upcoming: '예정', ended: '종료' };
+  
+  const detailEventBadge = document.getElementById('detailEventBadge');
+  const detailEventImage = document.getElementById('detailEventImage');
+  const detailEventTitle = document.getElementById('detailEventTitle');
+  const detailEventDatesText = document.getElementById('detailEventDatesText');
+  const detailEventDesc = document.getElementById('detailEventDesc');
+  const detailEventLink = document.getElementById('detailEventLink');
+  
+  if (detailEventBadge) {
+    detailEventBadge.className = `event-badge ${status}`;
+    detailEventBadge.textContent = statusLabels[status];
+  }
+  
+  if (detailEventImage) {
+    if (e.image) {
+      detailEventImage.src = e.image;
+      detailEventImage.parentElement.style.display = 'block';
+    } else {
+      detailEventImage.src = '';
+      detailEventImage.parentElement.style.display = 'none';
+    }
+  }
+  
+  if (detailEventTitle) detailEventTitle.textContent = e.title;
+  if (detailEventDatesText) {
+    detailEventDatesText.textContent = `${e.start_date.replace(/-/g, '.')} ~ ${e.end_date.replace(/-/g, '.')}`;
+  }
+  if (detailEventDesc) detailEventDesc.textContent = e.description || '상세 설명이 없습니다.';
+  
+  if (detailEventLink) {
+    if (e.link) {
+      detailEventLink.href = e.link;
+      detailEventLink.style.display = 'flex';
+    } else {
+      detailEventLink.href = '#';
+      detailEventLink.style.display = 'none';
+    }
+  }
+  
+  eventDetailModal.classList.add('active');
+};
+
+window.openEventLink = function(url) {
+  if (url) {
+    window.open(url, '_blank');
+  }
+};
+
+function compressImage(file, callback) {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function(event) {
+    const img = new Image();
+    img.src = event.target.result;
+    img.onload = function() {
+      const maxW = 800;
+      let w = img.width;
+      let h = img.height;
+      
+      if (w > maxW) {
+        h = Math.round((h * maxW) / w);
+        w = maxW;
+      }
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+      callback(dataUrl);
+    };
+  };
+}
+
+function saveEventsToServer() {
+  let apiSaveEventsUrl = '/api/save_events';
+  if (window.location.protocol === 'file:') {
+    apiSaveEventsUrl = 'http://localhost:8000/api/save_events';
+  }
+  
+  return fetch(apiSaveEventsUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rawEvents)
+  })
+  .then(resp => {
+    if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
+    return resp.json();
+  })
+  .then(data => {
+    if (data.status === 'ok') {
+      return true;
+    } else {
+      throw new Error(data.message || '저장 중 서버 실패');
+    }
+  });
+}
+
+window.openEventAddModal = function() {
+  const eventModal = document.getElementById('eventModal');
+  const eventModalTitle = document.getElementById('eventModalTitle');
+  const editEventId = document.getElementById('editEventId');
+  const eventTitle = document.getElementById('eventTitle');
+  const eventStartDate = document.getElementById('eventStartDate');
+  const eventEndDate = document.getElementById('eventEndDate');
+  const eventDesc = document.getElementById('eventDesc');
+  const eventLink = document.getElementById('eventLink');
+  
+  const eventImagePreview = document.getElementById('eventImagePreview');
+  const eventUploadPlaceholder = document.getElementById('eventUploadPlaceholder');
+  const btnRemoveImage = document.getElementById('btnRemoveImage');
+  const deleteEventBtn = document.getElementById('deleteEventBtn');
+  
+  if (!eventModal) return;
+  eventModalTitle.textContent = '새 이벤트 등록';
+  editEventId.value = '';
+  eventTitle.value = '';
+  eventStartDate.value = '';
+  eventEndDate.value = '';
+  eventDesc.value = '';
+  eventLink.value = '';
+  currentEventImageBase64 = '';
+  
+  if (eventImagePreview) {
+    eventImagePreview.src = '';
+    eventImagePreview.classList.add('hidden');
+  }
+  if (eventUploadPlaceholder) {
+    eventUploadPlaceholder.classList.remove('hidden');
+  }
+  if (btnRemoveImage) {
+    btnRemoveImage.classList.add('hidden');
+  }
+  if (deleteEventBtn) {
+    deleteEventBtn.style.display = 'none';
+  }
+  
+  eventModal.classList.add('active');
+};
+
+window.openEventEditModal = function(e, index) {
+  e.stopPropagation();
+  const eventItem = rawEvents[index];
+  
+  const eventModal = document.getElementById('eventModal');
+  const eventModalTitle = document.getElementById('eventModalTitle');
+  const editEventId = document.getElementById('editEventId');
+  const eventTitle = document.getElementById('eventTitle');
+  const eventStartDate = document.getElementById('eventStartDate');
+  const eventEndDate = document.getElementById('eventEndDate');
+  const eventDesc = document.getElementById('eventDesc');
+  const eventLink = document.getElementById('eventLink');
+  
+  const eventImagePreview = document.getElementById('eventImagePreview');
+  const eventUploadPlaceholder = document.getElementById('eventUploadPlaceholder');
+  const btnRemoveImage = document.getElementById('btnRemoveImage');
+  const deleteEventBtn = document.getElementById('deleteEventBtn');
+  
+  if (!eventItem || !eventModal) return;
+  
+  eventModalTitle.textContent = '이벤트 수정';
+  editEventId.value = index;
+  eventTitle.value = eventItem.title;
+  eventStartDate.value = eventItem.start_date;
+  eventEndDate.value = eventItem.end_date;
+  eventDesc.value = eventItem.description || '';
+  eventLink.value = eventItem.link || '';
+  currentEventImageBase64 = eventItem.image || '';
+  
+  if (eventImagePreview) {
+    if (currentEventImageBase64) {
+      eventImagePreview.src = currentEventImageBase64;
+      eventImagePreview.classList.remove('hidden');
+      if (eventUploadPlaceholder) eventUploadPlaceholder.classList.add('hidden');
+      if (btnRemoveImage) btnRemoveImage.classList.remove('hidden');
+    } else {
+      eventImagePreview.src = '';
+      eventImagePreview.classList.add('hidden');
+      if (eventUploadPlaceholder) eventUploadPlaceholder.classList.remove('hidden');
+      if (btnRemoveImage) btnRemoveImage.classList.add('hidden');
+    }
+  }
+  
+  if (deleteEventBtn) {
+    deleteEventBtn.style.display = 'block';
+  }
+  
+  eventModal.classList.add('active');
+};
+
+function closeEventModal() {
+  const eventModal = document.getElementById('eventModal');
+  if (eventModal) eventModal.classList.remove('active');
+}
+
+function handleEventFormSubmit(e) {
+  e.preventDefault();
+  const index = document.getElementById('editEventId').value;
+  
+  const eventTitle = document.getElementById('eventTitle');
+  const eventStartDate = document.getElementById('eventStartDate');
+  const eventEndDate = document.getElementById('eventEndDate');
+  const eventDesc = document.getElementById('eventDesc');
+  const eventLink = document.getElementById('eventLink');
+
+  const item = {
+    title: eventTitle.value.trim(),
+    start_date: eventStartDate.value,
+    end_date: eventEndDate.value,
+    description: eventDesc.value.trim(),
+    link: eventLink.value.trim(),
+    image: currentEventImageBase64 || ''
+  };
+  
+  if (index === '') {
+    rawEvents.push(item);
+  } else {
+    rawEvents[index] = item;
+  }
+  
+  closeEventModal();
+  
+  saveEventsToServer()
+    .then(() => {
+      showToast('이벤트가 성공적으로 저장되었습니다.', 'success');
+      renderEvents();
+    })
+    .catch(err => {
+      showToast('저장 중 오류가 발생했습니다: ' + err.message, 'error');
+    });
+}
+
+function handleDeleteEventClick() {
+  const index = document.getElementById('editEventId').value;
+  if (index !== '' && confirm('이 이벤트를 삭제하시겠습니까?')) {
+    rawEvents.splice(index, 1);
+    closeEventModal();
+    
+    saveEventsToServer()
+      .then(() => {
+        showToast('이벤트가 삭제되었습니다.', 'success');
+        renderEvents();
+      })
+      .catch(err => {
+        showToast('삭제 중 오류가 발생했습니다: ' + err.message, 'error');
+      });
+  }
+}
+
+function handleFetchOgClick() {
+  const eventLink = document.getElementById('eventLink');
+  const eventTitle = document.getElementById('eventTitle');
+  const eventDesc = document.getElementById('eventDesc');
+  const btnFetchOg = document.getElementById('btnFetchOg');
+  const eventImagePreview = document.getElementById('eventImagePreview');
+  const eventUploadPlaceholder = document.getElementById('eventUploadPlaceholder');
+  const btnRemoveImage = document.getElementById('btnRemoveImage');
+  
+  const urlVal = eventLink.value.trim();
+  if (!urlVal) {
+    showToast('링크 URL을 입력해 주세요.', 'error');
+    return;
+  }
+  
+  btnFetchOg.disabled = true;
+  btnFetchOg.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...';
+  
+  let apiFetchOgUrl = `/api/fetch_og?url=${encodeURIComponent(urlVal)}`;
+  if (window.location.protocol === 'file:') {
+    apiFetchOgUrl = `http://localhost:8000/api/fetch_og?url=${encodeURIComponent(urlVal)}`;
+  }
+  
+  fetch(apiFetchOgUrl)
+    .then(resp => {
+      if (!resp.ok) throw new Error('OG metadata fetch failed');
+      return resp.json();
+    })
+    .then(data => {
+      if (data.title && !eventTitle.value.trim()) {
+        eventTitle.value = data.title;
+      }
+      if (data.description && !eventDesc.value.trim()) {
+        eventDesc.value = data.description;
+      }
+      if (data.image) {
+        currentEventImageBase64 = data.image;
+        if (eventImagePreview) {
+          eventImagePreview.src = data.image;
+          eventImagePreview.classList.remove('hidden');
+          if (eventUploadPlaceholder) eventUploadPlaceholder.classList.add('hidden');
+          if (btnRemoveImage) btnRemoveImage.classList.remove('hidden');
+        }
+      }
+      showToast('링크 정보를 불러왔습니다.', 'success');
+    })
+    .catch(err => {
+      console.error(err);
+      showToast('링크 정보를 가져오지 못했습니다. 직접 입력해 주세요.', 'error');
+    })
+    .finally(() => {
+      btnFetchOg.disabled = false;
+      btnFetchOg.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> 불러오기';
+    });
 }
 
 

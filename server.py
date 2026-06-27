@@ -10,6 +10,10 @@ from concurrent.futures import ThreadPoolExecutor
 PORT = 8000
 
 class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, format, *args):
+        # Override to avoid stderr write error in Windows background task
+        pass
+
     def end_headers(self):
         if self.command == 'GET':
             self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
@@ -19,6 +23,8 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         try:
+            if self.path in ('/events', '/events/'):
+                self.path = '/index.html'
 
             if self.path.startswith('/api/live_status'):
                 import urllib.parse
@@ -168,6 +174,128 @@ class ScheduleHandler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 res_payload = {"config": config, "schedules": schedules}
                 self.wfile.write(json.dumps(res_payload, ensure_ascii=False).encode('utf-8'))
+            elif self.path == '/api/events':
+                events = None
+                supabase_url = os.environ.get("SUPABASE_URL")
+                supabase_anon_key = os.environ.get("SUPABASE_ANON_KEY")
+                if supabase_url and supabase_anon_key:
+                    url = f"{supabase_url}/rest/v1/events?select=*"
+                    req = urllib.request.Request(
+                        url,
+                        headers={
+                            "apikey": supabase_anon_key,
+                            "Authorization": f"Bearer {supabase_anon_key}"
+                        }
+                    )
+                    try:
+                        ctx = ssl.create_default_context()
+                        ctx.check_hostname = False
+                        ctx.verify_mode = ssl.CERT_NONE
+                        with urllib.request.urlopen(req, context=ctx, timeout=5) as r:
+                            events = json.loads(r.read().decode("utf-8"))
+                    except Exception as e:
+                        print(f"  [Server] Supabase fetch events failed: {e}")
+                
+                if events is None:
+                    events = []
+                    events_path = "events.json"
+                    if os.path.exists(events_path):
+                        with open(events_path, "r", encoding="utf-8") as f:
+                            events = json.load(f)
+                
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps(events, ensure_ascii=False).encode('utf-8'))
+            elif self.path.startswith('/api/fetch_og'):
+                import urllib.parse
+                parsed_url = urllib.parse.urlparse(self.path)
+                query_params = urllib.parse.parse_qs(parsed_url.query)
+                target_url = query_params.get("url", [None])[0]
+                if not target_url:
+                    self.send_response(400)
+                    self.send_header('Access-Control-Allow-Origin', '*')
+                    self.end_headers()
+                    self.wfile.write(b"Missing url parameter")
+                    return
+                
+                user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                req = urllib.request.Request(
+                    target_url,
+                    headers={"User-Agent": user_agent}
+                )
+                
+                title = ""
+                description = ""
+                image_base64 = ""
+                
+                try:
+                    ctx = ssl.create_default_context()
+                    ctx.check_hostname = False
+                    ctx.verify_mode = ssl.CERT_NONE
+                    with urllib.request.urlopen(req, context=ctx, timeout=5) as r:
+                        html = r.read().decode('utf-8', errors='ignore')
+                        
+                        import re
+                        title_match = re.search(r'<meta\s+property=["\']og:title["\']\s+content=["\'](.*?)["\']', html, re.IGNORECASE) or \
+                                      re.search(r'<meta\s+content=["\'](.*?)["\']\s+property=["\']og:title["\']', html, re.IGNORECASE)
+                        if title_match:
+                            title = title_match.group(1)
+                        else:
+                            t_match = re.search(r'<title>(.*?)</title>', html, re.IGNORECASE)
+                            if t_match:
+                                title = t_match.group(1)
+                        
+                        desc_match = re.search(r'<meta\s+property=["\']og:description["\']\s+content=["\'](.*?)["\']', html, re.IGNORECASE) or \
+                                     re.search(r'<meta\s+content=["\'](.*?)["\']\s+property=["\']og:description["\']', html, re.IGNORECASE) or \
+                                     re.search(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']', html, re.IGNORECASE) or \
+                                     re.search(r'<meta\s+content=["\'](.*?)["\']\s+name=["\']description["\']', html, re.IGNORECASE)
+                        if desc_match:
+                            description = desc_match.group(1)
+                            
+                        img_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\'](.*?)["\']', html, re.IGNORECASE) or \
+                                    re.search(r'<meta\s+content=["\'](.*?)["\']\s+property=["\']og:image["\']', html, re.IGNORECASE)
+                        if img_match:
+                            og_image = img_match.group(1)
+                            if og_image.startswith('//'):
+                                og_image = 'https:' + og_image
+                            elif og_image.startsWith('/'):
+                                parsed_t = urllib.parse.urlparse(target_url)
+                                og_image = f"{parsed_t.scheme}://{parsed_t.netloc}{og_image}"
+                                
+                            try:
+                                img_req = urllib.request.Request(og_image, headers={"User-Agent": user_agent})
+                                with urllib.request.urlopen(img_req, context=ctx, timeout=5) as img_res:
+                                    img_data = img_res.read()
+                                    content_type = img_res.headers.get("Content-Type", "image/jpeg")
+                                    import base64
+                                    img_b64 = base64.b64encode(img_data).decode("utf-8")
+                                    image_base64 = f"data:{content_type};base64,{img_b64}"
+                            except Exception as img_err:
+                                print(f"  [Server] Failed to fetch image {og_image}: {img_err}")
+                except Exception as e:
+                    print(f"  [Server] Failed to fetch OG for {target_url}: {e}")
+                
+                def decode_entities(s):
+                    import html as html_parser
+                    return html_parser.unescape(s)
+                
+                title = decode_entities(title)
+                description = decode_entities(description)
+                
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                res_payload = {
+                    "title": title,
+                    "description": description,
+                    "image": image_base64,
+                    "link": target_url
+                }
+                self.wfile.write(json.dumps(res_payload, ensure_ascii=False).encode('utf-8'))
             else:
                 super().do_GET()
         except Exception as e:
@@ -267,6 +395,77 @@ window.APP_SCHEDULE = {sched_js};
                 self.end_headers()
                 self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode('utf-8'))
                 print(f"  [Server] Error saving schedule: {e}")
+        elif self.path == '/api/save_events':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            try:
+                new_events = json.loads(post_data.decode('utf-8'))
+                
+                supabase_url = os.environ.get("SUPABASE_URL")
+                supabase_anon_key = os.environ.get("SUPABASE_ANON_KEY")
+                
+                if supabase_url and supabase_anon_key:
+                    ctx = ssl.create_default_context()
+                    ctx.check_hostname = False
+                    ctx.verify_mode = ssl.CERT_NONE
+                    
+                    # 1. Clear existing events
+                    delete_url = f"{supabase_url}/rest/v1/events?id=not.is.null"
+                    delete_req = urllib.request.Request(
+                        delete_url,
+                        headers={
+                            "apikey": supabase_anon_key,
+                            "Authorization": f"Bearer {supabase_anon_key}"
+                        },
+                        method="DELETE"
+                    )
+                    with urllib.request.urlopen(delete_req, context=ctx, timeout=10) as r:
+                        pass
+                        
+                    # 2. Insert new records in bulk
+                    payload = []
+                    for e in new_events:
+                        payload.append({
+                            "title": e.get("title", ""),
+                            "start_date": e.get("start_date", ""),
+                            "end_date": e.get("end_date", ""),
+                            "description": e.get("description", ""),
+                            "link": e.get("link", ""),
+                            "image": e.get("image", "")
+                        })
+                    
+                    if payload:
+                        insert_url = f"{supabase_url}/rest/v1/events"
+                        insert_req = urllib.request.Request(
+                            insert_url,
+                            data=json.dumps(payload).encode("utf-8"),
+                            headers={
+                                "apikey": supabase_anon_key,
+                                "Authorization": f"Bearer {supabase_anon_key}",
+                                "Content-Type": "application/json"
+                            },
+                            method="POST"
+                        )
+                        with urllib.request.urlopen(insert_req, context=ctx, timeout=10) as r:
+                            pass
+                    print("  [Server] Saved events to Supabase successfully")
+                else:
+                    with open("events.json", "w", encoding="utf-8") as f:
+                        json.dump(new_events, f, ensure_ascii=False, indent=2)
+                    print("  [Server] Saved events to events.json successfully")
+                
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "ok", "message": "Saved successfully"}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode('utf-8'))
+                print(f"  [Server] Error saving events: {e}")
         else:
             self.send_response(404)
             self.end_headers()

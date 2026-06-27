@@ -38,6 +38,16 @@
         <button class="sidebar-close-btn" id="sidebarCloseBtn"><i class="fa-solid fa-xmark"></i></button>
       </div>
       
+      <!-- Navigation Tabs -->
+      <div class="sidebar-nav">
+        <button class="nav-menu-btn active" id="btnGoHome">
+          <i class="fa-solid fa-calendar-days"></i> 주간 일정표
+        </button>
+        <button class="nav-menu-btn" id="btnGoEvents">
+          <i class="fa-solid fa-star"></i> 이벤트
+        </button>
+      </div>
+      
 
 
       <!-- Crew Public Links Section -->
@@ -153,6 +163,27 @@
           </div>
         </section>
         
+        <!-- Events Section (Initially Hidden) -->
+        <section class="events-section hidden" id="eventsViewSection">
+          <div class="section-header">
+            <h2>
+              <i class="fa-solid fa-star" style="color:var(--accent-orange);margin-right:8px;font-size:18px;"></i>
+              뚱딴지 크루 이벤트
+            </h2>
+            <button class="add-event-btn admin-only-inline hidden" id="addEventBtn">
+              <i class="fa-solid fa-plus"></i> 새 이벤트 추가
+            </button>
+          </div>
+          
+          <div class="events-grid" id="eventsGrid">
+            <!-- Dynamically populated events -->
+            <div class="loading-container">
+              <div class="loading-spinner"></div>
+              <p>이벤트 목록을 불러오는 중입니다...</p>
+            </div>
+          </div>
+        </section>
+        
         <!-- Search Results Section (Initially Hidden) -->
         <section class="search-results-section hidden" id="searchResultsSection">
           <div class="section-header">
@@ -210,6 +241,111 @@
             <button type="submit" class="btn btn-save" id="saveBtn">저장</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Modal (Add/Edit) -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 id="eventModalTitle">새 이벤트 등록</h3>
+        <button class="modal-close-btn" id="eventModalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="eventForm">
+          <input type="hidden" id="editEventId" value="">
+          
+          <div class="form-group">
+            <label for="eventTitle">이벤트 제목 *</label>
+            <input type="text" id="eventTitle" required placeholder="예: 뚱딴지 랜드 1주년 축제">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventStartDate">시작일 *</label>
+              <input type="date" id="eventStartDate" required>
+            </div>
+            <div class="form-group">
+              <label for="eventEndDate">종료일 *</label>
+              <input type="date" id="eventEndDate" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="eventDesc">설명</label>
+            <textarea id="eventDesc" rows="4" placeholder="이벤트 상세 내용을 입력하세요."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="eventLink">이벤트 링크 (URL)</label>
+            <div class="input-with-action">
+              <input type="url" id="eventLink" placeholder="https://example.com/event">
+              <button type="button" class="btn btn-secondary" id="btnFetchOg" title="링크에서 제목/설명/이미지를 자동으로 가져옵니다.">
+                <i class="fa-solid fa-cloud-arrow-down"></i> 불러오기
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>썸네일 / 포스터 이미지</label>
+            <div class="image-upload-area">
+              <div class="image-preview-container" id="eventImagePreviewContainer">
+                <img src="" id="eventImagePreview" class="hidden" alt="미리보기">
+                <div class="upload-placeholder" id="eventUploadPlaceholder">
+                  <i class="fa-regular fa-image"></i>
+                  <p>이미지를 업로드하거나 링크 불러오기를 실행하세요</p>
+                </div>
+              </div>
+              <div class="image-upload-controls">
+                <label class="btn btn-secondary btn-file-upload">
+                  <i class="fa-solid fa-upload"></i> 이미지 업로드
+                  <input type="file" id="eventImageFile" accept="image/*" class="hidden">
+                </label>
+                <button type="button" class="btn btn-delete hidden" id="btnRemoveImage">제거</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button type="button" class="btn btn-delete" id="deleteEventBtn">삭제</button>
+            <button type="submit" class="btn btn-save" id="saveEventBtn">저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Modal -->
+  <div class="modal-overlay" id="eventDetailModal">
+    <div class="modal-content glass-card event-detail-content">
+      <div class="modal-header">
+        <div class="event-detail-badge-wrap">
+          <span class="event-badge" id="detailEventBadge">진행중</span>
+        </div>
+        <button class="modal-close-btn" id="eventDetailCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="event-detail-layout">
+          <div class="event-detail-media">
+            <img src="" id="detailEventImage" alt="이벤트 포스터">
+          </div>
+          <div class="event-detail-info">
+            <h2 id="detailEventTitle">뚱딴지 랜드 1주년 축제</h2>
+            <div class="detail-event-dates">
+              <i class="fa-regular fa-calendar"></i>
+              <span id="detailEventDatesText">2026.06.27 ~ 2026.07.05</span>
+            </div>
+            <div class="detail-event-desc" id="detailEventDesc">
+              상세 내용 설명란입니다.
+            </div>
+            <div class="detail-event-actions">
+              <a href="#" id="detailEventLink" target="_blank" class="btn btn-primary event-link-btn">
+                <i class="fa-solid fa-up-right-from-square"></i> 바로가기
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

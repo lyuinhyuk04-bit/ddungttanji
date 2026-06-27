@@ -20,6 +20,26 @@
       "dest": "/api/schedules.js"
     },
     {
+      "src": "/api/events",
+      "dest": "/api/events.js"
+    },
+    {
+      "src": "/api/save_events",
+      "dest": "/api/save_events.js"
+    },
+    {
+      "src": "/api/fetch_og",
+      "dest": "/api/fetch_og.js"
+    },
+    {
+      "src": "/events",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/events/",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
