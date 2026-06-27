@@ -960,6 +960,25 @@ function renderLiveStatus(results) {
     const thumbnailSrc = r.is_live ? r.thumbnail : (mConfig.avatar || 'logo.png');
 
     return `
+      <div class="${cardClass}" onclick="window.open('${r.url}', '_blank')">
+        <div class="live-card-header">
+          <div class="live-card-member">
+            ${avatarHtml}
+            <span class="live-card-name">${r.name}</span>
+          </div>
+          <span class="${statusClass}">${statusText}</span>
+        </div>
+        <div class="live-thumbnail-wrapper">
+          <img src="${thumbnailSrc}" alt="${r.name} 방송 미리보기" class="live-thumbnail-img" loading="lazy" onerror="this.src='logo.png'">
+          <div class="live-thumbnail-overlay">
+            <div class="live-title-text">${displayTitle}</div>
+          </div>
+          <div class="live-thumbnail-play">
+            <i class="fa-solid fa-play"></i>
+          </div>
+        </div>
+      </div>
+    `;
   }).join('');
 }
 
