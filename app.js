@@ -251,6 +251,15 @@ function setupEventListeners() {
     btnFetchOg.addEventListener('click', handleFetchOgClick);
   }
   
+  const btnTabLink = document.getElementById('btnTabLink');
+  const btnTabManual = document.getElementById('btnTabManual');
+  if (btnTabLink) {
+    btnTabLink.addEventListener('click', () => switchEventModalTab('link'));
+  }
+  if (btnTabManual) {
+    btnTabManual.addEventListener('click', () => switchEventModalTab('manual'));
+  }
+  
   if (eventImageFile) {
     eventImageFile.addEventListener('change', e => {
       const file = e.target.files[0];
@@ -1293,6 +1302,9 @@ window.openEventAddModal = function() {
   const deleteEventBtn = document.getElementById('deleteEventBtn');
   
   if (!eventModal) return;
+  
+  switchEventModalTab('link');
+  
   eventModalTitle.textContent = '새 이벤트 등록';
   editEventId.value = '';
   eventTitle.value = '';
@@ -1339,6 +1351,8 @@ window.openEventEditModal = function(e, index) {
   
   if (!eventItem || !eventModal) return;
   
+  switchEventModalTab(eventItem.link ? 'link' : 'manual');
+  
   eventModalTitle.textContent = '이벤트 수정';
   editEventId.value = index;
   eventTitle.value = eventItem.title;
@@ -1376,13 +1390,19 @@ function closeEventModal() {
 
 function handleEventFormSubmit(e) {
   e.preventDefault();
+  
+  const eventLink = document.getElementById('eventLink');
+  if (currentEventModalTab === 'link' && !eventLink.value.trim()) {
+    showToast('링크 불러오기 모드에서는 이벤트 링크(URL)가 필수입니다.', 'error');
+    return;
+  }
+  
   const index = document.getElementById('editEventId').value;
   
   const eventTitle = document.getElementById('eventTitle');
   const eventStartDate = document.getElementById('eventStartDate');
   const eventEndDate = document.getElementById('eventEndDate');
   const eventDesc = document.getElementById('eventDesc');
-  const eventLink = document.getElementById('eventLink');
 
   const item = {
     title: eventTitle.value.trim(),
@@ -1482,6 +1502,56 @@ function handleFetchOgClick() {
       btnFetchOg.disabled = false;
       btnFetchOg.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> 불러오기';
     });
+}
+
+let currentEventModalTab = 'link'; // 'link' or 'manual'
+
+function switchEventModalTab(tab) {
+  currentEventModalTab = tab;
+  
+  const btnTabLink = document.getElementById('btnTabLink');
+  const btnTabManual = document.getElementById('btnTabManual');
+  const linkInputGroup = document.getElementById('linkInputGroup');
+  const eventFormFieldsContainer = document.getElementById('eventFormFieldsContainer');
+  const imageInputGroup = document.getElementById('imageInputGroup');
+  const lblEventLink = document.getElementById('lblEventLink');
+  const btnFetchOg = document.getElementById('btnFetchOg');
+  const eventLink = document.getElementById('eventLink');
+  const eventTitle = document.getElementById('eventTitle');
+
+  if (!btnTabLink || !btnTabManual || !linkInputGroup || !eventFormFieldsContainer) return;
+
+  if (tab === 'link') {
+    btnTabLink.classList.add('active');
+    btnTabManual.classList.remove('active');
+    
+    // Move link input group to the top of fields container
+    eventFormFieldsContainer.insertBefore(linkInputGroup, eventFormFieldsContainer.firstChild);
+    
+    // Show fetch button
+    if (btnFetchOg) btnFetchOg.classList.remove('hidden');
+    
+    // Set link to required (will validate in submit handler)
+    if (lblEventLink) lblEventLink.textContent = '이벤트 링크 (URL) *';
+    if (eventLink) eventLink.placeholder = 'https://example.com/event';
+  } else {
+    btnTabLink.classList.remove('active');
+    btnTabManual.classList.add('active');
+    
+    // Move link input group to the bottom (before image upload)
+    if (imageInputGroup) {
+      eventFormFieldsContainer.insertBefore(linkInputGroup, imageInputGroup);
+    } else {
+      eventFormFieldsContainer.appendChild(linkInputGroup);
+    }
+    
+    // Hide fetch button
+    if (btnFetchOg) btnFetchOg.classList.add('hidden');
+    
+    // Optional link
+    if (lblEventLink) lblEventLink.textContent = '이벤트 링크 (URL - 선택)';
+    if (eventLink) eventLink.placeholder = '이벤트 바로가기 링크 (선택)';
+  }
 }
 
 

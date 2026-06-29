@@ -256,53 +256,62 @@
         <form id="eventForm">
           <input type="hidden" id="editEventId" value="">
           
-          <div class="form-group">
-            <label for="eventTitle">이벤트 제목 *</label>
-            <input type="text" id="eventTitle" required placeholder="예: 뚱딴지 랜드 1주년 축제">
+          <!-- Tab Switcher -->
+          <div class="form-tabs">
+            <button type="button" class="form-tab-btn active" id="btnTabLink">링크 불러오기</button>
+            <button type="button" class="form-tab-btn" id="btnTabManual">직접 입력</button>
           </div>
           
-          <div class="form-row">
-            <div class="form-group">
-              <label for="eventStartDate">시작일 *</label>
-              <input type="date" id="eventStartDate" required>
-            </div>
-            <div class="form-group">
-              <label for="eventEndDate">종료일 *</label>
-              <input type="date" id="eventEndDate" required>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="eventDesc">설명</label>
-            <textarea id="eventDesc" rows="4" placeholder="이벤트 상세 내용을 입력하세요."></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label for="eventLink">이벤트 링크 (URL)</label>
-            <div class="input-with-action">
-              <input type="url" id="eventLink" placeholder="https://example.com/event">
-              <button type="button" class="btn btn-secondary" id="btnFetchOg" title="링크에서 제목/설명/이미지를 자동으로 가져옵니다.">
-                <i class="fa-solid fa-cloud-arrow-down"></i> 불러오기
-              </button>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label>썸네일 / 포스터 이미지</label>
-            <div class="image-upload-area">
-              <div class="image-preview-container" id="eventImagePreviewContainer">
-                <img src="" id="eventImagePreview" class="hidden" alt="미리보기">
-                <div class="upload-placeholder" id="eventUploadPlaceholder">
-                  <i class="fa-regular fa-image"></i>
-                  <p>이미지를 업로드하거나 링크 불러오기를 실행하세요</p>
-                </div>
+          <div id="eventFormFieldsContainer">
+            <!-- Link input group (will be moved dynamically via JS) -->
+            <div class="form-group" id="linkInputGroup">
+              <label for="eventLink" id="lblEventLink">이벤트 링크 (URL) *</label>
+              <div class="input-with-action">
+                <input type="url" id="eventLink" placeholder="https://example.com/event">
+                <button type="button" class="btn btn-secondary" id="btnFetchOg" title="링크에서 제목/설명/이미지를 자동으로 가져옵니다.">
+                  <i class="fa-solid fa-cloud-arrow-down"></i> 불러오기
+                </button>
               </div>
-              <div class="image-upload-controls">
-                <label class="btn btn-secondary btn-file-upload">
-                  <i class="fa-solid fa-upload"></i> 이미지 업로드
-                  <input type="file" id="eventImageFile" accept="image/*" class="hidden">
-                </label>
-                <button type="button" class="btn btn-delete hidden" id="btnRemoveImage">제거</button>
+            </div>
+            
+            <div class="form-group" id="titleInputGroup">
+              <label for="eventTitle">이벤트 제목 *</label>
+              <input type="text" id="eventTitle" required placeholder="예: 뚱딴지 랜드 1주년 축제">
+            </div>
+            
+            <div class="form-row" id="datesInputGroup">
+              <div class="form-group">
+                <label for="eventStartDate">시작일 *</label>
+                <input type="date" id="eventStartDate" required>
+              </div>
+              <div class="form-group">
+                <label for="eventEndDate">종료일 *</label>
+                <input type="date" id="eventEndDate" required>
+              </div>
+            </div>
+            
+            <div class="form-group" id="descInputGroup">
+              <label for="eventDesc">설명</label>
+              <textarea id="eventDesc" rows="4" placeholder="이벤트 상세 내용을 입력하세요."></textarea>
+            </div>
+            
+            <div class="form-group" id="imageInputGroup">
+              <label>썸네일 / 포스터 이미지 (선택)</label>
+              <div class="image-upload-area">
+                <div class="image-preview-container" id="eventImagePreviewContainer">
+                  <img src="" id="eventImagePreview" class="hidden" alt="미리보기">
+                  <div class="upload-placeholder" id="eventUploadPlaceholder">
+                    <i class="fa-regular fa-image"></i>
+                    <p>이미지를 업로드하거나 링크 불러오기를 실행하세요</p>
+                  </div>
+                </div>
+                <div class="image-upload-controls">
+                  <label class="btn btn-secondary btn-file-upload">
+                    <i class="fa-solid fa-upload"></i> 이미지 업로드
+                    <input type="file" id="eventImageFile" accept="image/*" class="hidden">
+                  </label>
+                  <button type="button" class="btn btn-delete hidden" id="btnRemoveImage">제거</button>
+                </div>
               </div>
             </div>
           </div>
