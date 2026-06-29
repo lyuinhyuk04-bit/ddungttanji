@@ -250,7 +250,10 @@
     <div class="modal-content glass-card">
       <div class="modal-header">
         <h3 id="eventModalTitle">새 이벤트 등록</h3>
-        <button class="modal-close-btn" id="eventModalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <button type="submit" form="eventForm" class="btn btn-save" style="padding: 6px 14px; font-size: 13px; font-weight: 600; min-width: auto; height: auto; margin: 0; line-height: 1.4;">저장</button>
+          <button type="button" class="modal-close-btn" id="eventModalCloseBtn" style="padding: 0; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
       </div>
       <div class="modal-body">
         <form id="eventForm">
