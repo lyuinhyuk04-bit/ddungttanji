@@ -190,14 +190,20 @@ def parse_monthly_grid_sheet(csv_data, member_key):
     day_names_sun = ["일", "월", "화", "수", "목", "금", "토"]
 
     # --- Auto-detect year/month from early rows ---
-    for row in reader[:10]:
+    year_detected = False
+    month_detected = False
+    for row in reader[:4]:
         row_text = " ".join(row)
-        ym = re.search(r"(\d{4})\s*년", row_text)
-        if ym:
-            year = int(ym.group(1))
-        mm = re.search(r"(\d{1,2})\s*월", row_text)
-        if mm:
-            month = int(mm.group(1))
+        if not year_detected:
+            ym = re.search(r"(\d{4})\s*년", row_text)
+            if ym:
+                year = int(ym.group(1))
+                year_detected = True
+        if not month_detected:
+            mm = re.search(r"(\d{1,2})\s*월", row_text)
+            if mm:
+                month = int(mm.group(1))
+                month_detected = True
 
     # --- Auto-detect column range by finding the day-name header row ---
     col_start, col_end = None, None
@@ -222,12 +228,15 @@ def parse_monthly_grid_sheet(csv_data, member_key):
     while row_idx < len(reader):
         row = reader[row_idx]
         if len(row) > col_start:
-            # Check if this row contains date numbers in the calendar columns
+            # Check if this row contains date numbers (possibly with text) in the calendar columns
             date_count = 0
             for col in range(col_start, min(col_end, len(row))):
                 val = row[col].strip()
-                if val.isdigit() and 1 <= int(val) <= 31:
-                    date_count += 1
+                m_day = re.match(r"^(\d{1,2})(?!\s*월)\b", val)
+                if m_day:
+                    day_num = int(m_day.group(1))
+                    if 1 <= day_num <= 31:
+                        date_count += 1
             
             if date_count >= 2:  # At least 2 date numbers to be a date row
                 date_row = row
@@ -242,7 +251,8 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                     next_date_count = 0
                     for col in range(col_start, min(col_end, len(next_row))):
                         val = next_row[col].strip() if col < len(next_row) else ""
-                        if val.isdigit() and 1 <= int(val) <= 31:
+                        m_next = re.match(r"^(\d{1,2})(?!\s*월)\b", val)
+                        if m_next:
                             next_date_count += 1
                     if next_date_count >= 2:
                         break
@@ -250,10 +260,12 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                 
                 for col_idx in range(col_start, min(col_end, len(date_row))):
                     day_val = date_row[col_idx].strip()
-                    if not day_val or not day_val.isdigit():
+                    m_day = re.match(r"^(\d{1,2})(?!\s*월)\b(.*)", day_val, re.DOTALL)
+                    if not m_day:
                         continue
                     
-                    day_num = int(day_val)
+                    day_num = int(m_day.group(1))
+                    cell_text = m_day.group(2).strip()
                     if day_num < 1 or day_num > 31:
                         continue
                     
@@ -268,6 +280,8 @@ def parse_monthly_grid_sheet(csv_data, member_key):
                     
                     # Collect all non-empty detail cells for this column
                     details = []
+                    if cell_text:
+                        details.append(cell_text)
                     for d_row in detail_rows:
                         if col_idx < len(d_row):
                             val = d_row[col_idx].strip()
