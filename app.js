@@ -444,34 +444,8 @@ function selectMember(key) {
   renderMembersList();
   renderActiveMemberProfile();
   
-  // Auto-navigate to the latest schedule's week if current week is empty for this member
-  const memberScheds = rawSchedules.filter(s => s.member === key);
-  if (memberScheds.length > 0) {
-    const today = new Date();
-    const curWeekD = new Date(today);
-    const curWeekDay = curWeekD.getDay();
-    const curWeekDiff = curWeekD.getDate() - curWeekDay + (curWeekDay === 0 ? -6 : 1);
-    const curWeekStart = new Date(curWeekD.setDate(curWeekDiff));
-    curWeekStart.setHours(0,0,0,0);
-    
-    const curWeekEnd = new Date(curWeekStart);
-    curWeekEnd.setDate(curWeekStart.getDate() + 6);
-    curWeekEnd.setHours(23,59,59,999);
-    
-    const hasCurrentWeekSched = memberScheds.some(s => {
-      const sDate = new Date(s.date);
-      return sDate >= curWeekStart && sDate <= curWeekEnd;
-    });
-    
-    if (!hasCurrentWeekSched) {
-      const sorted = [...memberScheds].sort((a, b) => b.date.localeCompare(a.date));
-      setWeekStartToDate(new Date(sorted[0].date));
-    } else {
-      setWeekStartToDate(today);
-    }
-  } else {
-    setWeekStartToDate(new Date());
-  }
+  // Always default to the current week (당일 주차)
+  setWeekStartToDate(new Date());
 
   renderWeeklySchedule();
   sidebar.classList.remove('open');
