@@ -166,6 +166,7 @@ def parse_google_sheet(csv_data, member_key):
                 # Team-specific routing
                 is_oa_line = any(kw in line.upper() for kw in ["오아", "오아팀", "OA"])
                 is_sajang_line = any(kw in line for kw in ["박사장", "사장팀", "박사장팀"])
+                is_naesu_line = "내수서버" in line
                 
                 member_in_oa = member_key in ["neboring", "peach", "homiming", "yuki"]
                 member_in_sajang = member_key in ["ggommori", "maribyeol", "niniming"]
@@ -181,6 +182,10 @@ def parse_google_sheet(csv_data, member_key):
                     if is_member or member_in_sajang:
                         include_line = True
                         prefix = "[사장팀] " if not is_member else ""
+                elif is_naesu_line:
+                    if member_key not in ["adeung", "heda"]:
+                        include_line = True
+                        prefix = "[내수] " if not is_member else ""
                 else:
                     is_unnamed = not has_any_member_name_or_emoji(line)
                     if is_member or is_crew or is_unnamed:
