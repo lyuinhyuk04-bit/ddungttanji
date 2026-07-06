@@ -162,17 +162,38 @@ def parse_google_sheet(csv_data, member_key):
                 is_crew   = ("뚱딴지" in line
                              and not any(e in line for e in other_emojis)
                              and not is_member)
-                is_unnamed = not has_any_member_name_or_emoji(line)
                 
-                if is_member or is_crew or is_unnamed:
+                # Team-specific routing
+                is_oa_line = any(kw in line.upper() for kw in ["오아", "오아팀", "OA"])
+                is_sajang_line = any(kw in line for kw in ["박사장", "사장팀", "박사장팀"])
+                
+                member_in_oa = member_key in ["neboring", "peach", "homiming", "yuki"]
+                member_in_sajang = member_key in ["ggommori", "maribyeol", "niniming"]
+                
+                include_line = False
+                prefix = ""
+                
+                if is_oa_line:
+                    if is_member or member_in_oa:
+                        include_line = True
+                        prefix = "[오아팀] " if not is_member else ""
+                elif is_sajang_line:
+                    if is_member or member_in_sajang:
+                        include_line = True
+                        prefix = "[사장팀] " if not is_member else ""
+                else:
+                    is_unnamed = not has_any_member_name_or_emoji(line)
+                    if is_member or is_crew or is_unnamed:
+                        include_line = True
+                        prefix = "[크루] " if (is_crew or is_unnamed) else ""
+                
+                if include_line:
                     tm = extract_time(line)
                     line_clean = remove_time_patterns(line)
                     clean_word = re.sub(r'[\s\W_]+', '', line_clean)
                     if not clean_word or clean_word.isdigit() or line_clean in ["뱅온", "공지", "미정"]:
                         line_clean = "미정"
                     
-                    # If this is a crew-wide event or unnamed shared event, mark with [크루] prefix
-                    prefix = "[크루] " if (is_crew or is_unnamed) else ""
                     title = prefix + line_clean
                     
                     schedules.append({
