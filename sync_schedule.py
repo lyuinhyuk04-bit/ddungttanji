@@ -107,6 +107,20 @@ def parse_google_sheet(csv_data, member_key):
     except Exception:
         pass
 
+    def has_any_member_name_or_emoji(txt):
+        if any(e in txt for e in ALL_EMOJIS):
+            return True
+        all_nicks_flat = [
+            "아뚱", "뚱대장", "뚱때장", "뚱대", "대장", "유키", "꼼모리", "모리", 
+            "니니밍", "뉴미밍", "니미밍", "호미밍", "미밍", "피치", "마리별", "리별", 
+            "너보링", "보링", "헤다"
+        ]
+        for k, m in MEMBERS.items():
+            name = m.get("name", "")
+            if name and name not in all_nicks_flat:
+                all_nicks_flat.append(name)
+        return any(nick in txt for nick in all_nicks_flat)
+
     schedules = []
     i = 1
     while i < len(reader) - 2:
@@ -148,13 +162,19 @@ def parse_google_sheet(csv_data, member_key):
                 is_crew   = ("뚱딴지" in line
                              and not any(e in line for e in other_emojis)
                              and not is_member)
-                if is_member or is_crew:
+                is_unnamed = not has_any_member_name_or_emoji(line)
+                
+                if is_member or is_crew or is_unnamed:
                     tm = extract_time(line)
                     line_clean = remove_time_patterns(line)
                     clean_word = re.sub(r'[\s\W_]+', '', line_clean)
                     if not clean_word or clean_word.isdigit() or line_clean in ["뱅온", "공지", "미정"]:
                         line_clean = "미정"
-                    title = ("[크루] " if is_crew else "") + line_clean
+                    
+                    # If this is a crew-wide event or unnamed shared event, mark with [크루] prefix
+                    prefix = "[크루] " if (is_crew or is_unnamed) else ""
+                    title = prefix + line_clean
+                    
                     schedules.append({
                         "member":  member_key,
                         "date":    date_str,
