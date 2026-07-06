@@ -27,7 +27,7 @@ MEMBERS    = config["members"]  # dict of all members
 # ── Google Sheet ───────────────────────────────────────────────────────────────
 SHEET_URL = ("https://docs.google.com/spreadsheets/d/"
              "1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk"
-             "/export?format=csv&gid=185905705")
+             "/export?format=csv&gid=1421214785")
 
 # Other member emojis (used to exclude other members' schedule lines)
 ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵"}
