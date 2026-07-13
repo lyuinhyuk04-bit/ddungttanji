@@ -30,7 +30,7 @@ SHEET_URL = ("https://docs.google.com/spreadsheets/d/"
              "/export?format=csv&gid=1421214785")
 
 # Other member emojis (used to exclude other members' schedule lines)
-ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵"}
+ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄"}
 
 def remove_time_patterns(text):
     if not text:
@@ -113,7 +113,7 @@ def parse_google_sheet(csv_data, member_key):
         all_nicks_flat = [
             "아뚱", "뚱대장", "뚱때장", "뚱대", "대장", "유키", "꼼모리", "모리", 
             "니니밍", "뉴미밍", "니미밍", "호미밍", "미밍", "피치", "마리별", "리별", 
-            "너보링", "보링", "헤다"
+            "너보링", "보링", "헤다", "네이"
         ]
         for k, m in MEMBERS.items():
             name = m.get("name", "")
@@ -157,7 +157,8 @@ def parse_google_sheet(csv_data, member_key):
                         ["피치"] if member_key == "peach" else \
                         ["마리별", "리별"] if member_key == "maribyeol" else \
                         ["너보링", "보링"] if member_key == "neboring" else \
-                        ["헤다"] if member_key == "heda" else [member_name]
+                        ["헤다"] if member_key == "heda" else \
+                        ["네이"] if member_key == "nay" else [member_name]
                 is_member = member_emoji in line or any(nick in line for nick in nicks)
                 is_crew   = ("뚱딴지" in line
                              and not any(e in line for e in other_emojis)
