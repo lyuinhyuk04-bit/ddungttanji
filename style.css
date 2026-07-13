@@ -226,6 +226,11 @@ button, input {
   color: #0f9d58;
 }
 
+.crew-link-icon.nay {
+  background: rgba(90, 125, 255, 0.15);
+  color: #5a7dff;
+}
+
 .crew-link-info h3 {
   font-size: 13px;
   font-weight: 500;

@@ -413,6 +413,15 @@ function renderCrewLinks() {
     { key:'cafe',    name:'네이버 카페', desc:'뚱딴지 팬카페',       icon:'fa-solid fa-mug-hot',       url: L.cafe    },
     { key:'sheet',   name:'구글 시트',   desc:'크루 공용 일정표',    icon:'fa-solid fa-table-columns', url: L.sheet   },
   ];
+  if (L.nayPreview) {
+    links.push({
+      key: 'nay',
+      name: '네이님 미리보기 일정표',
+      desc: '실시간 방송 미리보기',
+      icon: 'fa-solid fa-play',
+      url: L.nayPreview
+    });
+  }
   crewLinksContainer.innerHTML = links.map(l => `
     <a href="${l.url}" target="_blank" class="crew-link-card">
       <div class="crew-link-icon ${l.key}"><i class="${l.icon}"></i></div>
