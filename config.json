@@ -95,7 +95,9 @@
       "emoji": "🦄",
       "avatar": "nay.jpg",
       "soopId": "shurome",
-      "soopBoards": []
+      "soopBoards": [
+        "https://neiki.netlify.app/"
+      ]
     }
   }
 }

@@ -215,6 +215,66 @@ def parse_google_sheet(csv_data, member_key):
 
     return schedules
 
+def fetch_nay_firebase_schedules():
+    print("  Fetching Nay Firebase schedules...")
+    import ssl
+    url = "https://neeii-e9d2f-default-rtdb.asia-southeast1.firebasedatabase.app/events.json"
+    schedules = []
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
+            data = r.read().decode('utf-8', errors='ignore')
+            events_dict = json.loads(data)
+            if not events_dict or not isinstance(events_dict, dict):
+                return []
+            
+            days_map = ["월", "화", "수", "목", "금", "토", "일"]
+            for date_str, ev_list in events_dict.items():
+                if not ev_list or not isinstance(ev_list, list):
+                    continue
+                try:
+                    dt = datetime.strptime(date_str, "%Y-%m-%d")
+                    day_val = days_map[dt.weekday()]
+                except Exception:
+                    day_val = "월"
+                
+                for ev in ev_list:
+                    if not ev or not isinstance(ev, dict):
+                        continue
+                    title = ev.get("title", "").strip()
+                    if not title:
+                        continue
+                    
+                    tm = ev.get("time", "").strip()
+                    if not tm:
+                        tm = "시간 미정"
+                    
+                    prefix = ""
+                    if ev.get("hiatus"):
+                        prefix = "[휴방] "
+                    elif ev.get("hapbang"):
+                        prefix = "[합방] "
+                    elif ev.get("important"):
+                        prefix = "⭐ "
+                        
+                    full_title = prefix + title
+                    
+                    schedules.append({
+                        "member":  "nay",
+                        "date":    date_str,
+                        "day":     day_val,
+                        "time":    tm,
+                        "title":   full_title,
+                        "note":    "네이 일정표 사이트 기준",
+                        "source":  "firebase"
+                    })
+    except Exception as e:
+        print(f"  Firebase schedules fetch failed: {e}")
+    return schedules
+
 def fetch_personal_sheet(url):
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -1022,8 +1082,9 @@ def merge_member_sources(sheet_scheds, cafe_scheds, soop_scheds, member_key):
             for x in personal_items:
                 by_source.setdefault(x["source"], []).append(x)
                 
-            # Choose the highest priority source available
-            if "google_sheet" in by_source:
+            if "firebase" in by_source:
+                selected_personal = by_source["firebase"]
+            elif "google_sheet" in by_source:
                 selected_personal = by_source["google_sheet"]
             elif "naver_cafe_image" in by_source:
                 selected_personal = by_source["naver_cafe_image"]
@@ -1237,6 +1298,10 @@ def main():
             crew_scheds = parse_google_sheet(csv_data, member_key)
             print(f"  Crew sheet entries: {len(crew_scheds)}")
             sheet_scheds = personal_scheds + crew_scheds
+        elif member_key == "nay":
+            firebase_scheds = fetch_nay_firebase_schedules()
+            print(f"  Firebase schedules: {len(firebase_scheds)}")
+            sheet_scheds = firebase_scheds + parse_google_sheet(csv_data, member_key)
         else:
             sheet_scheds = parse_google_sheet(csv_data, member_key)
         print(f"  Sheet entries (total): {len(sheet_scheds)}")

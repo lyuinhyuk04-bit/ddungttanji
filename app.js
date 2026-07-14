@@ -456,6 +456,7 @@ function renderActiveMemberProfile() {
   const m = appConfig.members[activeMember];
   // Use the first board URL as the primary link
   const primaryBoard = (m.soopBoards && m.soopBoards[0]) || '#';
+  const linkLabel = activeMember === 'nay' ? '네이 위키 바로가기' : 'SOOP 방송국 공지 바로가기';
   activeMemberProfile.innerHTML = `
     ${m.avatar 
       ? `<img src="${m.avatar}" alt="${m.name}" class="active-member-avatar-img">`
@@ -465,7 +466,7 @@ function renderActiveMemberProfile() {
       <p>
         <a href="${primaryBoard}" target="_blank">
           <i class="fa-solid fa-square-rss" style="color:var(--accent-blue);margin-right:4px;"></i>
-          SOOP 방송국 공지 바로가기
+          ${linkLabel}
         </a>
       </p>
     </div>`;
