@@ -25,9 +25,15 @@ CREW_LINKS = config["crewLinks"]
 MEMBERS    = config["members"]  # dict of all members
 
 # ── Google Sheet ───────────────────────────────────────────────────────────────
-SHEET_URL = ("https://docs.google.com/spreadsheets/d/"
-             "1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk"
-             "/export?format=csv&gid=1421214785")
+sheet_url_str = CREW_LINKS.get("sheet", "")
+doc_match = re.search(r"/d/([a-zA-Z0-9-_]+)", sheet_url_str)
+gid_match = re.search(r"gid=(\d+)", sheet_url_str)
+if doc_match and gid_match:
+    doc_id = doc_match.group(1)
+    gid = gid_match.group(1)
+    SHEET_URL = f"https://docs.google.com/spreadsheets/d/{doc_id}/export?format=csv&gid={gid}"
+else:
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/export?format=csv&gid=842548820"
 
 # Other member emojis (used to exclude other members' schedule lines)
 ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄"}
