@@ -36,7 +36,7 @@ else:
     SHEET_URL = "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/export?format=csv&gid=842548820"
 
 # Other member emojis (used to exclude other members' schedule lines)
-ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄"}
+ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄","🐈‍⬛"}
 
 def remove_time_patterns(text):
     if not text:
@@ -113,19 +113,60 @@ def parse_google_sheet(csv_data, member_key):
     except Exception:
         pass
 
+    def get_matched_members(line_text):
+        matched = set()
+        emoji_map = {
+            "adeung": ["🐷"],
+            "yuki": ["❄️"],
+            "ggommori": ["💛"],
+            "niniming": ["💜"],
+            "homiming": ["🍒"],
+            "peach": ["🍑"],
+            "maribyeol": ["💫"],
+            "heda": ["💙"],
+            "neboring": ["🩵"],
+            "nay": ["🦄", "🐈‍⬛"]
+        }
+        for m_key, emojis in emoji_map.items():
+            if any(e in line_text for e in emojis):
+                matched.add(m_key)
+        
+        nick_map = {
+            "adeung": ["아뚱", "아뚱이", "뚱이", "뚱대장", "뚱때장", "뚱대", "대장"],
+            "yuki": ["유키", "유키님", "윸키", "윸"],
+            "ggommori": ["꼼모리", "꼬모리", "꼼모", "꼬모", "모리", "꼼모리님"],
+            "niniming": ["니니밍", "뉴미밍", "니미밍", "니밍", "니니밍님", "니니"],
+            "homiming": ["호미밍", "미밍", "호미", "홈밍", "호미밍님"],
+            "peach": ["피치", "치피", "피치님"],
+            "maribyeol": ["마리별", "리별", "마리", "별이", "마리별님"],
+            "neboring": ["너보링", "보링", "뽀링", "뽀링이", "보링이", "너보링님"],
+            "heda": ["헤다", "헤다님", "해다"],
+            "nay": ["네이", "네이님", "네이짱", "네이링"]
+        }
+        for m_key, nicks in nick_map.items():
+            for nick in nicks:
+                if nick in line_text:
+                    if nick == "뚱" and "뚱딴지" in line_text:
+                        idx = 0
+                        is_actual = False
+                        while True:
+                            idx = line_text.find("뚱", idx)
+                            if idx == -1:
+                                break
+                            if line_text[idx:idx+3] != "뚱딴지":
+                                is_actual = True
+                                break
+                            idx += 1
+                        if is_actual:
+                            matched.add(m_key)
+                    else:
+                        matched.add(m_key)
+        return matched
+
     def has_any_member_name_or_emoji(txt):
         if any(e in txt for e in ALL_EMOJIS):
             return True
-        all_nicks_flat = [
-            "아뚱", "뚱대장", "뚱때장", "뚱대", "대장", "유키", "꼼모리", "모리", 
-            "니니밍", "뉴미밍", "니미밍", "호미밍", "미밍", "피치", "마리별", "리별", 
-            "너보링", "보링", "헤다", "네이"
-        ]
-        for k, m in MEMBERS.items():
-            name = m.get("name", "")
-            if name and name not in all_nicks_flat:
-                all_nicks_flat.append(name)
-        return any(nick in txt for nick in all_nicks_flat)
+        return len(get_matched_members(txt)) > 0
 
     schedules = []
     i = 1
@@ -154,26 +195,15 @@ def parse_google_sheet(csv_data, member_key):
                 line = line.strip()
                 if not line:
                     continue
-                # Nickname matching
-                nicks = ["아뚱", "뚱대장", "뚱때장", "뚱대", "대장"] if member_key == "adeung" else \
-                        ["유키"] if member_key == "yuki" else \
-                        ["꼼모리", "모리"] if member_key == "ggommori" else \
-                        ["니니밍", "뉴미밍", "니미밍"] if member_key == "niniming" else \
-                        ["호미밍", "미밍"] if member_key == "homiming" else \
-                        ["피치"] if member_key == "peach" else \
-                        ["마리별", "리별"] if member_key == "maribyeol" else \
-                        ["너보링", "보링"] if member_key == "neboring" else \
-                        ["헤다"] if member_key == "heda" else \
-                        ["네이"] if member_key == "nay" else [member_name]
-                is_member = member_emoji in line or any(nick in line for nick in nicks)
-                is_crew   = ("뚱딴지" in line
-                             and not any(e in line for e in other_emojis)
-                             and not is_member)
+                
+                matched_set = get_matched_members(line)
+                is_member = member_key in matched_set
+                is_crew   = "뚱딴지" in line
                 
                 # Team-specific routing
-                is_oa_line = any(kw in line.upper() for kw in ["오아", "오아팀", "OA"])
-                is_sajang_line = any(kw in line for kw in ["박사장", "사장팀", "박사장팀"])
-                is_naesu_line = "내수서버" in line
+                is_oa_line = any(kw in line.upper() for kw in ["오아", "오아팀", "OA"]) and not is_crew
+                is_sajang_line = any(kw in line for kw in ["박사장", "사장팀", "박사장팀"]) and not is_crew
+                is_naesu_line = "내수서버" in line and not is_crew
                 
                 member_in_oa = member_key in ["neboring", "peach", "homiming", "yuki"]
                 member_in_sajang = member_key in ["ggommori", "maribyeol", "niniming"]
