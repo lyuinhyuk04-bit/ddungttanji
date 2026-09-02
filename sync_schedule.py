@@ -33,7 +33,7 @@ if doc_match and gid_match:
     gid = gid_match.group(1)
     SHEET_URL = f"https://docs.google.com/spreadsheets/d/{doc_id}/export?format=csv&gid={gid}"
 else:
-    SHEET_URL = "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/export?format=csv&gid=842548820"
+    SHEET_URL = "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/export?format=csv&gid=222264155"
 
 # Other member emojis (used to exclude other members' schedule lines)
 ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄","🐈‍⬛"}
