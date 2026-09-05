@@ -36,7 +36,7 @@ else:
     SHEET_URL = "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/export?format=csv&gid=222264155"
 
 # Other member emojis (used to exclude other members' schedule lines)
-ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄","🐈‍⬛"}
+ALL_EMOJIS = {"🐷","❄️","💛","💜","🍒","🍑","💫","💙","🩵","🦄","🐈‍⬛","🐿️","🌰"}
 
 def remove_time_patterns(text):
     if not text:
@@ -125,7 +125,9 @@ def parse_google_sheet(csv_data, member_key):
             "maribyeol": ["💫"],
             "heda": ["💙"],
             "neboring": ["🩵"],
-            "nay": ["🦄", "🐈‍⬛"]
+            "nay": ["🦄", "🐈‍⬛"],
+            "chaturi": ["🐿️"],
+            "doramzi": ["🌰"]
         }
         for m_key, emojis in emoji_map.items():
             if any(e in line_text for e in emojis):
@@ -141,7 +143,9 @@ def parse_google_sheet(csv_data, member_key):
             "maribyeol": ["마리별", "리별", "마리", "별이", "마리별님"],
             "neboring": ["너보링", "보링", "뽀링", "뽀링이", "보링이", "너보링님"],
             "heda": ["헤다", "헤다님", "해다"],
-            "nay": ["네이", "네이님", "네이짱", "네이링"]
+            "nay": ["네이", "네이님", "네이짱", "네이링"],
+            "chaturi": ["차투리", "투리", "투리님", "차투리님"],
+            "doramzi": ["도람지", "람지", "도람", "람지님", "도람지님"]
         }
         for m_key, nicks in nick_map.items():
             for nick in nicks:

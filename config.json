@@ -99,6 +99,22 @@
       "soopBoards": [
         "https://neiki.netlify.app/"
       ]
+    },
+    "chaturi": {
+      "name": "차투리",
+      "emoji": "🐿️",
+      "soopId": "hololoolu",
+      "soopBoards": [
+        "https://www.sooplive.com/station/hololoolu"
+      ]
+    },
+    "doramzi": {
+      "name": "도람지",
+      "emoji": "🌰",
+      "soopId": "doramzi610",
+      "soopBoards": [
+        "https://www.sooplive.com/station/doramzi610"
+      ]
     }
   }
 }
