@@ -103,6 +103,7 @@
     "chaturi": {
       "name": "차투리",
       "emoji": "🐿️",
+      "avatar": "chaturi.jpg",
       "soopId": "hololoolu",
       "soopBoards": [
         "https://www.sooplive.com/station/hololoolu"
@@ -111,6 +112,7 @@
     "doramzi": {
       "name": "도람지",
       "emoji": "🌰",
+      "avatar": "doramzi.jpg",
       "soopId": "doramzi610",
       "soopBoards": [
         "https://www.sooplive.com/station/doramzi610"
