@@ -5,6 +5,22 @@
     "sheet": "https://docs.google.com/spreadsheets/d/1MACuk1o089VAgMR43F46SXQkUwjQmEy6yZ4UDBJC8xk/edit?pli=1&gid=222264155#gid=222264155"
   },
   "defaultMember": "adeung",
+  "topBanners": [
+    {
+      "id": "homiming",
+      "imageUrl": "banner_homiming.jpg",
+      "title": "GOOD BYE 호미밍",
+      "subtitle": "지금까지 함께 해주셔서 감사합니다",
+      "linkUrl": ""
+    },
+    {
+      "id": "yuki",
+      "imageUrl": "banner_yuki.png",
+      "title": "고생했다 유키♡",
+      "subtitle": "지금도 너무 잘하고 있어 앞으로도, 늘 응원할게♡",
+      "linkUrl": ""
+    }
+  ],
   "members": {
     "adeung": {
       "name": "아뚱",
@@ -14,17 +30,6 @@
       "soopBoards": [
         "https://www.sooplive.com/station/gjstn7637/board/120654963"
       ]
-    },
-    "yuki": {
-      "name": "유키",
-      "emoji": "❄️",
-      "avatar": "yuki.jpg",
-      "soopId": "amaiyk0105",
-      "soopBoards": [
-        "https://www.sooplive.com/station/amaiyk0105/board/109321189",
-        "https://www.sooplive.com/station/amaiyk0105/board/123920023"
-      ],
-      "sheetUrl": "https://docs.google.com/spreadsheets/d/15fY3MiUeEYFjIb3RxpPTF59hLLJKBoj5x1aciuLGnQg/export?format=csv&gid=2073653648"
     },
     "ggommori": {
       "name": "꼼모리",
@@ -43,16 +48,6 @@
       "soopBoards": [
         "https://www.sooplive.com/station/niniming/board/91262538"
       ]
-    },
-    "homiming": {
-      "name": "호미밍",
-      "emoji": "🍒",
-      "avatar": "homiming.png",
-      "soopId": "donggeul2",
-      "soopBoards": [
-        "https://www.sooplive.com/station/donggeul2/board/104919443"
-      ],
-      "cafeUrl": "https://cafe.naver.com/f-e/cafes/30752173/menus/35?viewType=I"
     },
     "peach": {
       "name": "피치",

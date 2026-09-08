@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isLoaded = true;
 
       renderCrewLinks();
+      renderTopBanner();
       selectMember(activeMember);
       fetchLiveStatus();
       handleRouting();
@@ -96,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeMember = appConfig.defaultMember;
 
         renderCrewLinks();
+        renderTopBanner();
         selectMember(activeMember);
         fetchLiveStatus();
         handleRouting();
@@ -404,6 +406,150 @@ function setWeekStartToDate(target) {
 function getMemberSchedules() {
   return rawSchedules.filter(s => s.member === activeMember);
 }
+
+// ── Top Banner render ─────────────────────────────────────────────────────────
+let currentBannerIndex = 0;
+let bannerTimer = null;
+
+function renderTopBanner() {
+  const topBannerArea = document.getElementById('topBannerArea');
+  if (!topBannerArea) return;
+
+  if (sessionStorage.getItem('top_banner_closed') === 'true') {
+    topBannerArea.style.display = 'none';
+    return;
+  }
+
+  // Support array of banners (topBanners) or single object (topBanner)
+  const banners = (appConfig && appConfig.topBanners && appConfig.topBanners.length > 0)
+    ? appConfig.topBanners
+    : (appConfig && appConfig.topBanner ? [appConfig.topBanner] : []);
+
+  if (!banners || banners.length === 0) {
+    topBannerArea.style.display = 'none';
+    return;
+  }
+
+  topBannerArea.style.display = 'block';
+
+  if (banners.length === 1) {
+    const b = banners[0];
+    if (b.imageUrl) {
+      topBannerArea.innerHTML = `
+        <div class="top-banner-card top-banner-image-mode">
+          <a href="${b.linkUrl || '#'}" target="${b.linkUrl ? '_blank' : '_self'}">
+            <img src="${b.imageUrl}" alt="${b.title || '상단 배너'}" class="top-banner-img">
+          </a>
+          <button class="top-banner-close-btn" onclick="closeTopBanner()" title="배너 닫기" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.65);z-index:2;width:28px;height:28px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>`;
+    } else {
+      topBannerArea.innerHTML = `
+        <div class="top-banner-card">
+          <div class="top-banner-main">
+            <div class="top-banner-badge"><i class="fa-solid fa-bullhorn"></i> NOTICE</div>
+            <div class="top-banner-text">
+              <div class="top-banner-title">${b.title || '뚱딴지 크루 주간 일정표'}</div>
+              <div class="top-banner-sub">${b.subtitle || '크루 멤버들의 방송 일정과 소식을 한눈에 확인해보세요!'}</div>
+            </div>
+          </div>
+          <div class="top-banner-actions">
+            ${b.linkUrl ? `<a href="${b.linkUrl}" target="_blank" class="top-banner-link-btn"><i class="fa-solid fa-arrow-right-long"></i> 바로가기</a>` : ''}
+            <button class="top-banner-close-btn" onclick="closeTopBanner()" title="배너 닫기"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>`;
+    }
+    return;
+  }
+
+  // Multiple Banners Carousel
+  window.bannerItems = banners;
+  if (currentBannerIndex >= banners.length) currentBannerIndex = 0;
+
+  const currentB = banners[currentBannerIndex];
+
+  topBannerArea.innerHTML = `
+    <div class="top-banner-card top-banner-image-mode top-banner-slider" id="topBannerSlider">
+      <div class="top-banner-slide">
+        ${currentB.imageUrl ? `
+          <a href="${currentB.linkUrl || '#'}" target="${currentB.linkUrl ? '_blank' : '_self'}">
+            <img src="${currentB.imageUrl}" alt="${currentB.title || '상단 배너'}" class="top-banner-img">
+          </a>
+        ` : `
+          <div class="top-banner-main" style="padding:20px 24px;">
+            <div class="top-banner-badge"><i class="fa-solid fa-bullhorn"></i> NOTICE</div>
+            <div class="top-banner-text">
+              <div class="top-banner-title">${currentB.title}</div>
+              <div class="top-banner-sub">${currentB.subtitle}</div>
+            </div>
+          </div>
+        `}
+      </div>
+
+      <!-- Controls -->
+      <button class="banner-nav-btn prev" onclick="moveBanner(-1)" title="이전 배너">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <button class="banner-nav-btn next" onclick="moveBanner(1)" title="다음 배너">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <!-- Dots Indicator -->
+      <div class="banner-dots">
+        ${banners.map((_, idx) => `
+          <span class="banner-dot ${idx === currentBannerIndex ? 'active' : ''}" onclick="goToBanner(${idx})"></span>
+        `).join('')}
+      </div>
+
+      <button class="top-banner-close-btn" onclick="closeTopBanner()" title="배너 닫기" style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.65);z-index:6;width:28px;height:28px;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>`;
+
+  startBannerTimer();
+
+  const slider = document.getElementById('topBannerSlider');
+  if (slider) {
+    slider.addEventListener('mouseenter', stopBannerTimer);
+    slider.addEventListener('mouseleave', startBannerTimer);
+  }
+}
+
+function startBannerTimer() {
+  stopBannerTimer();
+  bannerTimer = setInterval(() => {
+    moveBanner(1);
+  }, 5000);
+}
+
+function stopBannerTimer() {
+  if (bannerTimer) {
+    clearInterval(bannerTimer);
+    bannerTimer = null;
+  }
+}
+
+window.moveBanner = function(step) {
+  if (!window.bannerItems || window.bannerItems.length <= 1) return;
+  currentBannerIndex = (currentBannerIndex + step + window.bannerItems.length) % window.bannerItems.length;
+  renderTopBanner();
+};
+
+window.goToBanner = function(idx) {
+  if (!window.bannerItems) return;
+  currentBannerIndex = idx;
+  renderTopBanner();
+};
+
+window.closeTopBanner = function() {
+  stopBannerTimer();
+  const topBannerArea = document.getElementById('topBannerArea');
+  if (topBannerArea) {
+    topBannerArea.style.display = 'none';
+  }
+  sessionStorage.setItem('top_banner_closed', 'true');
+};
 
 // ── Sidebar renders ───────────────────────────────────────────────────────────
 function renderCrewLinks() {
